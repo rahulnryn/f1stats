@@ -1,0 +1,11 @@
+# f1stats
+
+Teammates: Teammate comparisons in F1 are important to assess a driver’s ability as F1 is a sport largely based on the performance of the equipment and only the two drivers, driving for the same team, get to drive the same equipment.
+
+Median % Gap over a season: In F1, drivers attempt to set the fastest possible lap in the qualifying sessions so that they can get to start as far up in the grid as possible which gives them a massive advantage in the race. The fastest qualifying laps are a good way to get an idea of how quick a driver is exactly in terms of % in relation to their teammate. I take the median (middle) of the data to avoid discrepancies due to anomalies. 
+
+Head2Head Qualifying and Head2Head Race: I look at the final position of a driver relative to their teammates in both qualifying and races, this gives us an idea of how good a driver is in terms of final results against their teammates. Qualifying graph represents the gap between the fastest times set over all 3 sessions, while H2H Qualifying represents the final position in qualifying, these can be different at times or even often. The bottom table represents a classification of all races by both drivers with their positions or Retirements (Did not finish)
+
+DNF (Did Not Finish) Classification: Drivers do not finish every race, sometimes drivers might crash or they may have a mechanical failure or may not even start the race due to a car failure/injury. This distinction is important because while a crash may or may not be a driver’s fault, there is no doubt that a mechanical failure or an injury is NOT a driver’s fault and rather the equipments’. In comparing drivers, we must account for misfortunes of a driver relative to their teammate in terms of mechanical failures (or reliability), otherwise we may portray the wrong picture. I classify DNFs by looking at the data for which DNFs have a non mechanical reasons.
+
+Points Scored and Points scored per race: Points are probably the most important statistic for F1 teams and Drivers as they decide both the World Driver’s Championship and World Constructor’s (team) Championship. I show the final points of the season to compare the drivers and also show Points scored per race (without Mechanical DNFs) to give an idea of how the points would look like without poor reliability/misfortune for either driver.
