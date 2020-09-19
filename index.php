@@ -65,7 +65,7 @@
 
           <label class="year">Choose a Year:</label>
           <br> <br>
-          <form action="master/f1analysis.php"  method="post">
+          <form action="f1analysis.php"  method="post">
             <select id = "years" name="years" class = "buttons">
               <option value="">Select</option>
               <option value="2003">2003</option>
