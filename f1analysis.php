@@ -183,30 +183,26 @@
             $q1d1 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Q1);
             $q2d1 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Q2);
             $q3d1 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Q3);
-            if($q2d1 == NULL){
-                $q2d1 = 500;
-            }
-            if($q3d1 == NULL){
-                $q3d1 = 500;
-            }
             $q1d2 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Q1);
             $q2d2 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Q2);
             $q3d2 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Q3);
-
-            if($q2d2 == NULL){
-                $q2d2 = 500;
+            
+            if($q2d1 == NULL || $q2d2 == NULL){
+                $d1Further = $q1d1;
+                $d2Further = $q1d2;
             }
-            if($q3d2 == NULL){
-                $q3d2 = 500;
+            else if($q3d2 == NULL || $q3d1 == NULL){
+                $d1Further = min($q2d1, $q1d1);
+                $d2Further = min($q2d2, $q2d2);
             }
-            $driver1time = min($q1d1, min($q2d1, $q3d1));
-            $driver2time = min($q1d2, min($q2d2, $q3d2));
-            if($driver1time == 500){
-                continue;
+            else if($q3d2 != NULL and $q3d1 != NULL){
+                $d1Further = min($q2d1, min($q1d1, $q3d1));
+                $d2Further = min($q2d2, min($q1d2, $q3d2));
             }
-            if($driver2time == 500){
-                continue;
-            }
+            
+            $driver1time = $d1Further;
+            $driver2time = $d2Further;
+            
                 
             if($q1pos < $q2pos  and ($cdq2 == $drivername2 || $cdq2 == $drivername1)){
                 $countQualiWins[$cdq1]++;
@@ -364,7 +360,7 @@
 
   <div class ="box2">
       <?php
-          echo '<p class ="xaxisfont"> Y-Axis: Median % Gap of fastest qualifying lap to Teammate (' . $drivername1 . " to " . $drivername2  . ")</p> ";
+          echo '<p class ="xaxisfont"> Y-Axis: Median % Gap of fastest representative qualifying lap to Teammate (' . $drivername1 . " to " . $drivername2  . ")</p> ";
       ?>
       <p class ="xaxisfont"> X-Axis: Session Number (ONLY representative sessions are included.) </p>
   </div>
@@ -429,7 +425,7 @@
                 ?>
             </tr>
             <tr>
-                <td> Median Qualifying % Difference (fastest lap out of Q1-Q3 is taken) </td>
+                <td> Median Qualifying % Difference (fastest lap out of furthest Qualifying session is taken) </td>
                 <?php if(number_format(calculate_median($timeDelta), 3) > 0){
                         echo '<td>' . number_format(calculate_median($timeDelta), 3) . "%" . "</td>";
                         echo '<td class="underl"> ' . -1 * number_format(calculate_median($timeDelta), 3) . "%". "</td>";
