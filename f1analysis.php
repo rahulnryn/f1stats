@@ -231,7 +231,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>Line Chart Test</title>
+  <title>Teammate Comparison</title>
   <style type = "text/css">
         .box{
 
