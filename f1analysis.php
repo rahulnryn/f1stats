@@ -193,7 +193,7 @@
             }
             else if($q3d2 == NULL || $q3d1 == NULL){
                 $d1Further = min($q2d1, $q1d1);
-                $d2Further = min($q2d2, $q2d2);
+                $d2Further = min($q2d2, $q1d2);
             }
             else if($q3d2 != NULL and $q3d1 != NULL){
                 $d1Further = min($q2d1, min($q1d1, $q3d1));
@@ -211,10 +211,16 @@
                 $countQualiWins[$cdq2]++;
             }   
             if($cdq1 == $drivername1 and $cdq2 == $drivername2){
-                array_push($timeDelta, number_format((double)computeDiff($driver1time, $driver2time), 3));
+                $diff = number_format((double)computeDiff($driver1time, $driver2time), 3);
+                if($diff > -2 && $diff < 2){
+                    array_push($timeDelta, $diff);
+                }
             }             
             else if($cdq2 == $drivername1 and $cdq1 == $drivername2){
-                array_push($timeDelta, number_format((double)computeDiff($driver2time, $driver1time), 3));
+                $diff = number_format((double)computeDiff($driver2time, $driver1time), 3);
+                if($diff > -2 && $diff < 2){
+                    array_push($timeDelta, $diff);
+                }
             }
 
         
@@ -425,7 +431,7 @@
                 ?>
             </tr>
             <tr>
-                <td> Median Qualifying % Difference (fastest lap out of furthest Qualifying session is taken) </td>
+                <td> Median Qualifying % Difference (fastest lap out of furthest Qualifying session is taken, outlier data excluded) </td>
                 <?php if(number_format(calculate_median($timeDelta), 3) > 0){
                         echo '<td>' . number_format(calculate_median($timeDelta), 3) . "%" . "</td>";
                         echo '<td class="underl"> ' . -1 * number_format(calculate_median($timeDelta), 3) . "%". "</td>";
