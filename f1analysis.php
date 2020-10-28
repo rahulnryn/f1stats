@@ -169,7 +169,8 @@
    $countQualiWins=array($drivername1=>0,$drivername2=>0);
 
    $timeDelta = array();
-  
+   $timeDelta2 = array();
+
     for($x = 0; $x < $countRaces; $x++){
             $q1pos =$qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->position;
             $q2pos =$qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->position;
@@ -190,14 +191,23 @@
             if($q2d1 == NULL || $q2d2 == NULL){
                 $d1Further = $q1d1;
                 $d2Further = $q1d2;
+                $d1further1 =$q1d1;
+                $d2further1 =$q1d2;
+
             }
             else if($q3d2 == NULL || $q3d1 == NULL){
                 $d1Further = min($q2d1, $q1d1);
                 $d2Further = min($q2d2, $q1d2);
+                $d1further1 =$q2d1;
+                $d2further1 =$q2d2;
+
             }
             else if($q3d2 != NULL and $q3d1 != NULL){
                 $d1Further = min($q2d1, min($q1d1, $q3d1));
                 $d2Further = min($q2d2, min($q1d2, $q3d2));
+                $d1further1 =$q3d1;
+                $d2further1 =$q3d2;
+
             }
             
             $driver1time = $d1Further;
@@ -220,6 +230,22 @@
                 $diff = number_format((double)computeDiff($driver2time, $driver1time), 3);
                 if($diff > -2 && $diff < 2){
                     array_push($timeDelta, $diff);
+                }
+            }
+            $driver1time = $d1further1;
+            $driver2time = $d2further1;
+
+            
+            if($cdq1 == $drivername1 and $cdq2 == $drivername2){
+                $diff = number_format((double)computeDiff($driver1time, $driver2time), 3);
+                if($diff > -2 && $diff < 2){
+                    array_push($timeDelta2, $diff);
+                }
+            }             
+            else if($cdq2 == $drivername1 and $cdq1 == $drivername2){
+                $diff = number_format((double)computeDiff($driver2time, $driver1time), 3);
+                if($diff > -2 && $diff < 2){
+                    array_push($timeDelta2, $diff);
                 }
             }
 
@@ -431,7 +457,7 @@
                 ?>
             </tr>
             <tr>
-                <td> Median Qualifying % Difference (fastest lap out of furthest Qualifying session is taken, outlier data excluded) </td>
+                <td> Median Qualifying % Difference (fastest lap overall) </td>
                 <?php if(number_format(calculate_median($timeDelta), 3) > 0){
                         echo '<td>' . number_format(calculate_median($timeDelta), 3) . "%" . "</td>";
                         echo '<td class="underl"> ' . -1 * number_format(calculate_median($timeDelta), 3) . "%". "</td>";
@@ -439,6 +465,20 @@
                     else{
                         echo '<td class="underl"> ' . number_format(calculate_median($timeDelta), 3) . "%". "</td>";
                         echo '<td>' . -1 * number_format(calculate_median($timeDelta), 3) . "%" . "</td>";
+
+                    }
+                ?>
+
+            </tr>
+            <tr>
+                <td> Median Qualifying % Difference (fastest lap in final session) </td>
+                <?php if(number_format(calculate_median($timeDelta2), 3) > 0){
+                        echo '<td>' . number_format(calculate_median($timeDelta2), 3) . "%" . "</td>";
+                        echo '<td class="underl"> ' . -1 * number_format(calculate_median($timeDelta2), 3) . "%". "</td>";
+                    }
+                    else{
+                        echo '<td class="underl"> ' . number_format(calculate_median($timeDelta2), 3) . "%". "</td>";
+                        echo '<td>' . -1 * number_format(calculate_median($timeDelta2), 3) . "%" . "</td>";
 
                     }
                 ?>
