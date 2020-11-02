@@ -477,7 +477,7 @@
                 ?>
             </tr>
             <tr>
-                <td> Median Qualifying % Difference (fastest lap overall) </td>
+                <td> Median Qualifying % Difference (fastest lap overall, outliers excluded) </td>
                 <?php if(number_format(calculate_median($timeDelta), 3) > 0){
                         echo '<td>' . number_format(calculate_median($timeDelta), 3) . "%" . "</td>";
                         echo '<td class="underl"> ' . -1 * number_format(calculate_median($timeDelta), 3) . "%". "</td>";
@@ -491,7 +491,7 @@
 
             </tr>
             <tr>
-                <td> Median Qualifying % Difference (fastest lap in final session) </td>
+                <td> Median Qualifying % Difference (fastest lap in final session, outliers excluded) </td>
                 <?php if(number_format(calculate_median($timeDelta2), 3) > 0){
                         echo '<td>' . number_format(calculate_median($timeDelta2), 3) . "%" . "</td>";
                         echo '<td class="underl"> ' . -1 * number_format(calculate_median($timeDelta2), 3) . "%". "</td>";
