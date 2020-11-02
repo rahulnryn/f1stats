@@ -41,18 +41,20 @@
         return $median;
     }
     if(!empty($_POST['years'])){
-            $getYears = $_POST['years'];
+        $getYears = $_POST['years'];
+
     }
     else{
         $getYears = "2020";
     }
     if(!empty($_POST['teams'])){
+
             $getTeams = $_POST['teams'];
     }
     else{
         $getTeams = "mercedes";
     }
-   $json = file_get_contents("https://ergast.com/api/f1/" . $getYears . "/constructors" . "/" . $getTeams . "/results.json?limit=100");
+   $json = file_get_contents("http://ergast.com/api/f1/" . $getYears . "/constructors" . "/" . $getTeams . "/results.json?limit=100");
    $obj = json_decode($json);
    $drivername1 = ($obj->MRData->RaceTable->Races[0]->Results[0]->Driver->familyName);
    $drivername2 = ($obj->MRData->RaceTable->Races[0]->Results[1]->Driver->familyName);
@@ -163,96 +165,114 @@
    }
    $driverNames = array_keys($countWins);
    $driverWins = array_values($countWins);
-
-   $jsonquali = file_get_contents("https://ergast.com/api/f1/" .$getYears . "/constructors" ."/" . $getTeams . "/qualifying.json?limit=100");
+   sleep(2);
+   $jsonquali = file_get_contents("http://ergast.com/api/f1/" .$getYears . "/constructors" ."/" . $getTeams . "/qualifying.json?limit=100");
    $qualifying = json_decode($jsonquali);
    $countQualiWins=array($drivername1=>0,$drivername2=>0);
 
    $timeDelta = array();
    $timeDelta2 = array();
-
-    for($x = 0; $x < $countRaces; $x++){
-            $q1pos =$qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->position;
-            $q2pos =$qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->position;
-
-            $cdq1 = $qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Driver->familyName;
-            $cdq2 = $qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Driver->familyName;
-            if( (converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Q1) == NULL)
-                or (converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Q1) == NULL)){
-                continue;
-            }
-            $q1d1 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Q1);
-            $q2d1 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Q2);
-            $q3d1 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Q3);
-            $q1d2 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Q1);
-            $q2d2 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Q2);
-            $q3d2 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Q3);
-            
-            if($q2d1 == NULL || $q2d2 == NULL){
-                $d1Further = $q1d1;
-                $d2Further = $q1d2;
-                $d1further1 =$q1d1;
-                $d2further1 =$q1d2;
-
-            }
-            else if($q3d2 == NULL || $q3d1 == NULL){
-                $d1Further = min($q2d1, $q1d1);
-                $d2Further = min($q2d2, $q1d2);
-                $d1further1 =$q2d1;
-                $d2further1 =$q2d2;
-
-            }
-            else if($q3d2 != NULL and $q3d1 != NULL){
-                $d1Further = min($q2d1, min($q1d1, $q3d1));
-                $d2Further = min($q2d2, min($q1d2, $q3d2));
-                $d1further1 =$q3d1;
-                $d2further1 =$q3d2;
-
-            }
-            
-            $driver1time = $d1Further;
-            $driver2time = $d2Further;
-            
+   if($getYears >= '2003'){
+        for($x = 0; $x < $countRaces; $x++){
+                $q1pos =$qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->position;
+                $q2pos =$qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->position;
+                $cdq1 = $qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Driver->familyName;
+                $cdq2 = $qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Driver->familyName;
+                if( (converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Q1) == NULL)
+                    or (converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Q1) == NULL)){
+                    continue;
+                }
+                $q1d1 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Q1);
+                $q2d1 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Q2);
+                $q3d1 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Q3);
+                $q1d2 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Q1);
+                $q2d2 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Q2);
+                $q3d2 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Q3);
                 
+                if($q2d1 == NULL || $q2d2 == NULL){
+                    $d1Further = $q1d1;
+                    $d2Further = $q1d2;
+                    $d1further1 =$q1d1;
+                    $d2further1 =$q1d2;
+
+                }
+                else if($q3d2 == NULL || $q3d1 == NULL){
+                    $d1Further = min($q2d1, $q1d1);
+                    $d2Further = min($q2d2, $q1d2);
+                    $d1further1 =$q2d1;
+                    $d2further1 =$q2d2;
+
+                }
+                else if($q3d2 != NULL and $q3d1 != NULL){
+                    $d1Further = min($q2d1, min($q1d1, $q3d1));
+                    $d2Further = min($q2d2, min($q1d2, $q3d2));
+                    $d1further1 =$q3d1;
+                    $d2further1 =$q3d2;
+
+                }
+                
+                $driver1time = $d1Further;
+                $driver2time = $d2Further;
+                
+                    
+                if($q1pos < $q2pos  and ($cdq2 == $drivername2 || $cdq2 == $drivername1)){
+                    $countQualiWins[$cdq1]++;
+                }
+                else if($q2pos < $q1pos  and ($cdq1 == $drivername2 || $cdq1 == $drivername1)){
+                    $countQualiWins[$cdq2]++;
+                }   
+                if($cdq1 == $drivername1 and $cdq2 == $drivername2){
+                    $diff = number_format((double)computeDiff($driver1time, $driver2time), 3);
+                    if($diff > -2 && $diff < 2){
+                        array_push($timeDelta, $diff);
+                    }
+                }             
+                else if($cdq2 == $drivername1 and $cdq1 == $drivername2){
+                    $diff = number_format((double)computeDiff($driver2time, $driver1time), 3);
+                    if($diff > -2 && $diff < 2){
+                        array_push($timeDelta, $diff);
+                    }
+                }
+                $driver1time = $d1further1;
+                $driver2time = $d2further1;
+
+                
+                if($cdq1 == $drivername1 and $cdq2 == $drivername2){
+                    $diff = number_format((double)computeDiff($driver1time, $driver2time), 3);
+                    if($diff > -2 && $diff < 2){
+                        array_push($timeDelta2, $diff);
+                    }
+                }             
+                else if($cdq2 == $drivername1 and $cdq1 == $drivername2){
+                    $diff = number_format((double)computeDiff($driver2time, $driver1time), 3);
+                    if($diff > -2 && $diff < 2){
+                        array_push($timeDelta2, $diff);
+                    }
+                }
+
+            
+        }
+        $qualinames = array_keys($countQualiWins);
+        $qualiscores = array_values($countQualiWins);
+    }
+    else{
+        
+        
+        for($x = 0; $x < $countRaces; $x++){
+            $q1pos =$obj->MRData->RaceTable->Races[$x]->Results[0]->grid;
+            $q2pos =$obj->MRData->RaceTable->Races[$x]->Results[1]->grid;
+            $cdq1 = $obj->MRData->RaceTable->Races[$x]->Results[0]->Driver->familyName;
+            $cdq2 = $obj->MRData->RaceTable->Races[$x]->Results[1]->Driver->familyName;
             if($q1pos < $q2pos  and ($cdq2 == $drivername2 || $cdq2 == $drivername1)){
                 $countQualiWins[$cdq1]++;
             }
             else if($q2pos < $q1pos  and ($cdq1 == $drivername2 || $cdq1 == $drivername1)){
                 $countQualiWins[$cdq2]++;
             }   
-            if($cdq1 == $drivername1 and $cdq2 == $drivername2){
-                $diff = number_format((double)computeDiff($driver1time, $driver2time), 3);
-                if($diff > -2 && $diff < 2){
-                    array_push($timeDelta, $diff);
-                }
-            }             
-            else if($cdq2 == $drivername1 and $cdq1 == $drivername2){
-                $diff = number_format((double)computeDiff($driver2time, $driver1time), 3);
-                if($diff > -2 && $diff < 2){
-                    array_push($timeDelta, $diff);
-                }
-            }
-            $driver1time = $d1further1;
-            $driver2time = $d2further1;
-
-            
-            if($cdq1 == $drivername1 and $cdq2 == $drivername2){
-                $diff = number_format((double)computeDiff($driver1time, $driver2time), 3);
-                if($diff > -2 && $diff < 2){
-                    array_push($timeDelta2, $diff);
-                }
-            }             
-            else if($cdq2 == $drivername1 and $cdq1 == $drivername2){
-                $diff = number_format((double)computeDiff($driver2time, $driver1time), 3);
-                if($diff > -2 && $diff < 2){
-                    array_push($timeDelta2, $diff);
-                }
-            }
-
-        
+        }
+        $qualinames = array_keys($countQualiWins);
+        $qualiscores = array_values($countQualiWins);
     }
-    $qualinames = array_keys($countQualiWins);
-    $qualiscores = array_values($countQualiWins);
     $ppr1 = number_format((float)($countTotalPoints[$drivername1] / $racesFinished[$drivername1]), 2);
     $ppr2 = number_format((float)($countTotalPoints[$drivername2] / $racesFinished[$drivername2]), 2);
 
