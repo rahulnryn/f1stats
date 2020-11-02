@@ -121,7 +121,7 @@
           <input type="submit" name="submit" value="Submit" class="subbut" />
 
         </form>
-        <h5> Built using ERGAST database  </h5>
+        <h5> Built using ERGAST database (Results will be slightly delayed)  </h5>
 
       </div>
   </body>
