@@ -1,6 +1,6 @@
 <?php
     if(!empty($_POST["yearsID"])){
-        $obj1 = file_get_contents("http://ergast.com/api/f1/" . $_POST['yearsID'] . "/constructors.json");
+        $obj1 = file_get_contents("https://ergast.com/api/f1/" . $_POST['yearsID'] . "/constructors.json");
         $teams = json_decode($obj1);
         $allTeams = Array($teams->MRData->ConstructorTable->Constructors[0]->name=>$teams->MRData->ConstructorTable->Constructors[0]->constructorId);
         for($x = 0; $x < 23; $x++){
