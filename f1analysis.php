@@ -58,12 +58,23 @@
    $obj = json_decode($json);
    $drivername1 = ($obj->MRData->RaceTable->Races[0]->Results[0]->Driver->familyName);
    $drivername2 = ($obj->MRData->RaceTable->Races[0]->Results[1]->Driver->familyName);
-   $countWins=array($drivername1=>0,$drivername2=>0);
-   $countPoints=array($drivername1=>0,$drivername2=>0);
-   $countTotalPoints=array($drivername1=>0,$drivername2=>0);
+   $countOcc=array();
    $rc = file_get_contents("http://ergast.com/api/f1/" . $getYears . "/races.json");
    $racecount = json_decode($rc);
    $countRaces = $racecount->MRData->total;
+   for($x = 0; $x < $countRaces; $x++){
+        array_push($countOcc, $obj->MRData->RaceTable->Races[$x]->Results[0]->Driver->familyName);
+        array_push($countOcc, $obj->MRData->RaceTable->Races[$x]->Results[1]->Driver->familyName);
+   }
+   $values = array_count_values($countOcc);
+   arsort($values);
+   $driversComp = array_slice(array_keys($values), 0, 2, true);
+   $drivername1 = $driversComp[0];
+   $drivername2 = $driversComp[1];
+   $countWins=array($drivername1=>0,$drivername2=>0);
+   $countPoints=array($drivername1=>0,$drivername2=>0);
+   $countTotalPoints=array($drivername1=>0,$drivername2=>0);
+
 
 
     $rounds = array();
