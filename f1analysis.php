@@ -54,12 +54,12 @@
     else{
         $getTeams = "mercedes";
     }
-   $json = file_get_contents("http://ergast.com/api/f1/" . $getYears . "/constructors" . "/" . $getTeams . "/results.json?limit=100");
+   $json = file_get_contents("https://ergast.com/api/f1/" . $getYears . "/constructors" . "/" . $getTeams . "/results.json?limit=100");
    $obj = json_decode($json);
    $drivername1 = ($obj->MRData->RaceTable->Races[0]->Results[0]->Driver->familyName);
    $drivername2 = ($obj->MRData->RaceTable->Races[0]->Results[1]->Driver->familyName);
    $countOcc=array();
-   $rc = file_get_contents("http://ergast.com/api/f1/" . $getYears . "/races.json");
+   $rc = file_get_contents("https://ergast.com/api/f1/" . $getYears . "/races.json");
    $racecount = json_decode($rc);
    $countRaces = $racecount->MRData->total;
    for($x = 0; $x < $countRaces; $x++){
