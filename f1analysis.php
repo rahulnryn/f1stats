@@ -54,23 +54,37 @@
     else{
         $getTeams = "mercedes";
     }
+    if(!empty($_POST['racecheck'])){
+
+        $check = $_POST['racecheck'];
+    }
    $json = file_get_contents("https://ergast.com/api/f1/" . $getYears . "/constructors" . "/" . $getTeams . "/results.json?limit=100");
    $obj = json_decode($json);
    $drivername1 = ($obj->MRData->RaceTable->Races[0]->Results[0]->Driver->familyName);
    $drivername2 = ($obj->MRData->RaceTable->Races[0]->Results[1]->Driver->familyName);
+
    $countOcc=array();
    $rc = file_get_contents("https://ergast.com/api/f1/" . $getYears . "/races.json");
    $racecount = json_decode($rc);
    $countRaces = $racecount->MRData->total;
+   $countOcc2 = array();
    for($x = 0; $x < $countRaces; $x++){
         array_push($countOcc, $obj->MRData->RaceTable->Races[$x]->Results[0]->Driver->familyName);
         array_push($countOcc, $obj->MRData->RaceTable->Races[$x]->Results[1]->Driver->familyName);
+        array_push($countOcc2, $obj->MRData->RaceTable->Races[$x]->Results[0]->Driver->driverId);
+        array_push($countOcc2, $obj->MRData->RaceTable->Races[$x]->Results[1]->Driver->driverId);
    }
    $values = array_count_values($countOcc);
+   $values2 = array_count_values($countOcc2);
+   arsort($values2);
    arsort($values);
+   $driversComp2 = array_slice(array_keys($values2), 0, 2, true);
+
    $driversComp = array_slice(array_keys($values), 0, 2, true);
    $drivername1 = $driversComp[0];
    $drivername2 = $driversComp[1];
+   $dId1 = $driversComp2[0];
+   $dId2 = $driversComp2[1];
    $countWins=array($drivername1=>0,$drivername2=>0);
    $countPoints=array($drivername1=>0,$drivername2=>0);
    $countTotalPoints=array($drivername1=>0,$drivername2=>0);
@@ -176,7 +190,7 @@
    }
    $driverNames = array_keys($countWins);
    $driverWins = array_values($countWins);
-   sleep(2);
+   sleep(1);
    $jsonquali = file_get_contents("http://ergast.com/api/f1/" .$getYears . "/constructors" ."/" . $getTeams . "/qualifying.json?limit=100");
    $qualifying = json_decode($jsonquali);
    $countQualiWins=array($drivername1=>0,$drivername2=>0);
@@ -286,9 +300,111 @@
     }
     $ppr1 = number_format((float)($countTotalPoints[$drivername1] / $racesFinished[$drivername1]), 2);
     $ppr2 = number_format((float)($countTotalPoints[$drivername2] / $racesFinished[$drivername2]), 2);
+    $allRaces = array();
+    $starter = 1;
+    if($check == false || $getYears < '1996')
+        $ender = 0;
+    else{
+        $ender = $countRaces;
+    }
+    if( ($dId1 == 'sainz' || $dId2 == 'sainz') && $getYears == '2017' && $check){
+        $ender = 15;
+    }
+    if( ($dId1 == 'trulli' || $dId2 == 'trulli') && $getYears == '2004' && $check){
+        $ender = 15;
+    }
+    if( ($dId1 == 'kvyat' || $dId2 == 'kvyat') && $getYears == '2016' && $check){
+        $starter = 5;
+    }
+    if( ($dId1 == 'max_verstappen' || $dId2 == 'max_verstappen') && $getYears == '2016' && $check){
+        $starter = 5;
+    }
+    if( ($dId1 == 'gasly' || $dId2 == 'gasly') && $getYears == '2019' && $check){
+        $ender = 12;
+    }
+    if( ($dId1 == 'albon' || $dId2 == 'albon') && $getYears == '2019' && $check){
+        $ender = 12;
+    }
+    if( ($dId1 == 'fisichella' || $dId2 == 'fisichella') && $getYears == '2009' && $check){
+        $ender = 12;
+    }
+    if(!file_exists($getYears . $getTeams . '.txt')){
+        for($t = $starter; $t <= $ender; $t++){
+            sleep(1);
+            $rjson = file_get_contents('https://ergast.com/api/f1/' . $getYears . '/' . $t . '/' . 'drivers/' . $dId1 . '/laps.json?limit=100');
+            $rjson2 = file_get_contents('https://ergast.com/api/f1/' . $getYears . '/' . $t . '/' . 'drivers/' . $dId2 . '/laps.json?limit=100');
 
+            $obj = json_decode($rjson);
+            $obj2 = json_decode($rjson2);
+            $laps = $obj->MRData->total;
+            $laps2 = $obj2->MRData->total;
+            if($laps == 0 || $laps2 == 0){
+                $laps = 100;
+            }
+            $first = array();
+            $second = array();
+            for($i = 1; $i < min($laps, $laps2); $i++){
+                if($obj->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time == 0){
+                    break;
+                }
+                if($obj2->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time == 0){
+                    break;
+                }
+                $dt1 = converToSeconds($obj->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time);
+                $dt2 = converToSeconds($obj2->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time);
+                array_push($first, $dt1);
+                array_push($second, $dt2);
+            }
+            if(abs($laps-$laps2) <= 1){
+            
+                sort($first);
+                sort($second);
+                $length = (int)(0.75 * min(count($first), count($second)));
+                $diff = array();
 
+                for($i = 0; $i < $length; $i++){
+                    //echo("\n");
+                    //echo($first[$i] . "\n");
+                    //echo($second[$i] . "\n");
+                    $delta = number_format((double)computeDiff($first[$i], $second[$i]), 3);
+                    if($delta > -3 && $delta < 3)
+                        array_push($diff, $delta);
+                    //echo($delta);
+                }
+                //echo("\n");
+                //echo(calculate_median($diff) . "\n");
+                array_push($allRaces, number_format(calculate_median($diff), 3));
+            }
+        }
+        $medGap = (number_format(calculate_median($allRaces), 3));
+        $current = "";
+        for($i = 0; $i < count($allRaces); $i++){
+            $current .= ($allRaces[$i]);
+            if($i != count($allRaces) - 1){
+                $current .= ',';
+            }
+        }
+        if($check && !file_exists($getYears . $getTeams . '.txt') && $getYears >= "1996"){
+            $filename = $getYears . $getTeams . '.txt'; 
+            $fp = fopen($filename,"w");  
+            fwrite($fp,$current); 
+            fclose($fp);  
+        }
+    }
+
+    else{
+        $allRaces = array();
+        $racegapdata = fopen( $getYears . $getTeams . '.txt','r');
+        while ($line = fgets($racegapdata)) {
+            $allRaces = preg_split ("/\,/", $line);  
+        }
+        $medGap = (number_format(calculate_median($allRaces), 3));
+    }
 ?>
+
+
+    
+
 
 <!doctype html>
 <html lang="ja">
@@ -298,6 +414,30 @@
   <style type = "text/css">
         .box{
 
+        }
+      
+        .stylebut{
+            font-family: "Gotham-Black" ;
+            color: #FF7F50;
+            background-color: #737CA1;
+            font-size: 25px;
+            -webkit-text-stroke: 1.25px black; 
+        }
+        .Footer1{
+            position: absolute;
+            top: 15px;
+            right:30px;
+
+        }
+        h3{
+            color: #4682b4
+        }
+        
+        .box123{
+            position: absolute;
+
+            top: 950px;
+            right: 450px;
         }
         #racedata{
             border-collapse: collapse;
@@ -398,7 +538,7 @@
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: <?php  echo json_encode($timeDelta); ?>
+                    data: <?php  echo json_encode($timeDelta2); ?>
                 }
             ]
         
@@ -407,9 +547,28 @@
         responsive: false
         
     };
+    var data2 = {
+            labels: <?php echo json_encode($rounds); ?>,
+
+            datasets: [
+                {
+                    label: "Median % GAP in Races",
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "black",
+                    pointColor: "red",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: <?php  echo json_encode($allRaces); ?>
+                }
+            ]
+        
+    };
   
     window.onload = function(){
+        window.lineChart = new Chart(document.getElementById("raceChart").getContext("2d")).Line(data2, options);   
         window.lineChart = new Chart(document.getElementById("lineChart").getContext("2d")).Line(data, options);        
+     
     }
   --></script>
 </head>
@@ -421,11 +580,26 @@
 
   </div>
 
+  <div class ="box123">
+    <h2 id = "headingrace"> Race Pace Graph </h1>
+
+    <canvas id="raceChart" style="height: 18rem" ></canvas> 
+
+    <?php
+
+          echo '<p class ="xaxisfont"> Y-Axis: Median % Gap of fastest 75% of race laps lap to Teammate (' . $drivername1 . " to " . $drivername2  . ")</p> ";
+
+    ?>
+    <p class ="xaxisfont"> X-Axis: Session Number (ONLY races both drivers finished are included.) </p>
+
+  </div>
+
   <div class ="box2">
       <?php
           echo '<p class ="xaxisfont"> Y-Axis: Median % Gap of fastest representative qualifying lap to Teammate (' . $drivername1 . " to " . $drivername2  . ")</p> ";
       ?>
       <p class ="xaxisfont"> X-Axis: Session Number (ONLY representative sessions are included.) </p>
+      
   </div>
   <div class ="tabledata">
     <table id="racedata">
@@ -486,20 +660,6 @@
                      }
 
                 ?>
-            </tr>
-            <tr>
-                <td> Median Qualifying % Difference (fastest lap overall, outliers excluded) </td>
-                <?php if(number_format(calculate_median($timeDelta), 3) > 0){
-                        echo '<td>' . number_format(calculate_median($timeDelta), 3) . "%" . "</td>";
-                        echo '<td class="underl"> ' . -1 * number_format(calculate_median($timeDelta), 3) . "%". "</td>";
-                    }
-                    else{
-                        echo '<td class="underl"> ' . number_format(calculate_median($timeDelta), 3) . "%". "</td>";
-                        echo '<td>' . -1 * number_format(calculate_median($timeDelta), 3) . "%" . "</td>";
-
-                    }
-                ?>
-
             </tr>
             <tr>
                 <td> Median Qualifying % Difference (fastest lap in final session, outliers excluded) </td>
@@ -576,7 +736,25 @@
                 }
             ?> 
         </tr>
+        <tr>
+                <td> Median Race % Difference (fastest 75% of Laps in races both drivers finished) </td>
+                
+                <?php if($medGap > 0){
+                        echo '<td>' . $medGap . "%" . "</td>";
+                        echo '<td class="underl"> ' . -1 * $medGap . "%". "</td>";
+                    }
+                    else{
+                        echo '<td class="underl"> ' . $medGap . "%". "</td>";
+                        echo '<td>' . -1 * $medGap . "%" . "</td>";
+
+                    }
+                ?>
+
+        </tr>
   </table>
-  <h2> <a href = "index.php"> Try Another Comparison </a> </h2> 
+  <div class = "Footer1">
+     
+    <h3> <a href = "index.php"> <h3> Try Another Comparison </h3> </a> </h3> 
+  </div>
 </body>
 </html>
