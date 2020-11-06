@@ -384,12 +384,7 @@
                 $current .= ',';
             }
         }
-        if($check && !file_exists($getYears . $getTeams . '.txt') && $getYears >= "1996"){
-            $filename = $getYears . $getTeams . '.txt'; 
-            $fp = fopen($filename,"w");  
-            fwrite($fp,$current); 
-            fclose($fp);  
-        }
+     
     }
 
     else{
