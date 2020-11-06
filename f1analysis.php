@@ -386,7 +386,6 @@
         }
      
     }
-
     else{
         $allRaces = array();
         $racegapdata = fopen( $getYears . $getTeams . '.txt','r');
