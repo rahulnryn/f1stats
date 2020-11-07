@@ -328,9 +328,10 @@
     if( ($dId1 == 'fisichella' || $dId2 == 'fisichella') && $getYears == '2009' && $check){
         $ender = 12;
     }
+    sleep(0.2);
     if(!file_exists($getYears . $getTeams . '.txt')){
         for($t = $starter; $t <= $ender; $t++){
-            sleep(1);
+            sleep(0.5);
             $rjson = file_get_contents('https://ergast.com/api/f1/' . $getYears . '/' . $t . '/' . 'drivers/' . $dId1 . '/laps.json?limit=100');
             $rjson2 = file_get_contents('https://ergast.com/api/f1/' . $getYears . '/' . $t . '/' . 'drivers/' . $dId2 . '/laps.json?limit=100');
 
