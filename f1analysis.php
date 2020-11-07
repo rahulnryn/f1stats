@@ -414,20 +414,25 @@
   <title>Teammate Comparison</title>
   <style type = "text/css">
         .box{
-
+            width: 40%;
+            height: 40%;
         }
-      
-        .stylebut{
-            font-family: "Gotham-Black" ;
-            color: #FF7F50;
-            background-color: #737CA1;
-            font-size: 25px;
-            -webkit-text-stroke: 1.25px black; 
+    
+        .tabledata{
+            position: absolute;
+            font-size: 100%;
+            width: 100%;
+            height: 100%;
+            top: 70%;
+            right: 0%;
+
         }
         .Footer1{
             position: absolute;
-            top: 15px;
-            right:30px;
+            font-size: 100%;
+
+            top: 1%;
+            right: 1%;
 
         }
         h3{
@@ -436,27 +441,35 @@
         
         .box123{
             position: absolute;
-
-            top: 950px;
-            right: 450px;
+            font-size: 100%;
+            width: 40%;
+            height: 40%;
+            
+            top: 137%;
         }
-        #racedata{
+        .racedata{
+            position: absolute;
             border-collapse: collapse;
             border: 3px solid black;
             border-spacing: 5rem;
             width:50%;
             height:5%;
+            font-size: 100%;
             color: black;
             background-color: #fed8b1;
      
         }
-        #racedata th{
+        .racedata th{
+            font-size: 130%;
             border-left: 2px solid grey;
             border-bottom: 2px solid grey;
             font-family: "Gotham-Black" ;
 
         }
-        #racedata td{
+        .racedata td{
+
+            font-size: 130%;
+
             border-left: 2px solid grey;
             border-bottom: 2px solid grey;
             font-size: 16px;
@@ -465,6 +478,9 @@
 
         }
         body{
+            position: absolute;
+            width: 100%;
+            height: 100%;
             background-color: #DCDCDC;
         }
         .xaxisfont{
@@ -476,26 +492,42 @@
             background: #32CD32;
 
         }
+        .qualbox{
+            position: absolute;
+            width: 30%;
+            height: 5%;
+            font-size: 100%;
+            right: 10%;
+            top: 20%;
+        }
+        .racebox{
+        
+            position: absolute;
+            width: 30%;
+            height: 5%;
+            font-size: 100%;
+            top: 80%;
+            right: 10%;
+            top: 80%;       
+        }
+       
         .qualifyingcomp{
             position: absolute;
             background-color: #EEEEEE;
 
-            top: 155px;
-            right: 200px;
             border-collapse: collapse;
             border: 3px solid black;
             border-spacing: 5rem;
-            width:30%;
-            height:5%;
             color: black;
         }
         .qualifyingcomp td{
             border-left: 2px solid grey;
             border-bottom: 2px solid grey;
-            font-size:16px;
+            font-size:100%;
 
         }
         .qualifyingcomp th{
+            font-size: 100%;
             border-left: 2px solid grey;
             border-bottom: 2px solid grey;
         }
@@ -503,28 +535,29 @@
             position: absolute;
             background-color: #EEEEEE;
 
-            top: 550px;
-            right: 200px;
+     
             border-collapse: collapse;
             border: 3px solid black;
             border-spacing: 5rem;
-            width:30%;
-            height:5%;
             color: black;
         }
         .racecomp td{
+            font-size:100%;
+
             border-left: 2px solid grey;
             border-bottom: 2px solid grey;
-            font-size:16px;
 
         }
         .racecomp th{
+            font-size:100%;
+
             border-left: 2px solid grey;
             border-bottom: 2px solid grey;
         }
    
        
   </style>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
   <script language="JavaScript"><!--
     var data = {
@@ -545,8 +578,9 @@
         
     };
     var options = {
-        responsive: false
-        
+        responsive: true,
+        width: "150%",
+        height: "100%"
     };
     var data2 = {
             labels: <?php echo json_encode($rounds); ?>,
@@ -574,188 +608,189 @@
   --></script>
 </head>
 <body>
-  <h1> <?php echo $drivername1 . " vs " . $drivername2 . " (" . $getYears . ")"  ?> </h1>
-  <div class="box">
-   
-    <canvas id="lineChart" style="height: 18rem" ></canvas> 
+    <div class="box">
+    <h1> <?php echo $drivername1 . " vs " . $drivername2 . " (" . $getYears . ")"  ?> </h1>
 
-  </div>
-
-  <div class ="box123">
-    <h2 id = "headingrace"> Race Pace Graph </h1>
-
-    <canvas id="raceChart" style="height: 18rem" ></canvas> 
-
-    <?php
-
-          echo '<p class ="xaxisfont"> Y-Axis: Median % Gap of fastest 75% of race laps lap to Teammate (' . $drivername1 . " to " . $drivername2  . ")</p> ";
-
-    ?>
-    <p class ="xaxisfont"> X-Axis: Session Number (ONLY races both drivers finished are included.) </p>
-
-  </div>
-
-  <div class ="box2">
-      <?php
-          echo '<p class ="xaxisfont"> Y-Axis: Median % Gap of fastest representative qualifying lap to Teammate (' . $drivername1 . " to " . $drivername2  . ")</p> ";
-      ?>
-      <p class ="xaxisfont"> X-Axis: Session Number (ONLY representative sessions are included.) </p>
-      
-  </div>
-  <div class ="tabledata">
-    <table id="racedata">
-        <tr>
-        <th> Race Number </th>
-
-        <th> <?php echo $drivername1 ?> </th>
-        <th> <?php echo $drivername2 ?> </th>
-        </tr>
-        <?php 
-            $i=1;
-            while($i <= $countRaces){
-                echo "<tr>";
-                echo "<td>" . $i . "</td>";
-
-                if($getRacePositions1[$i-1] < $getRacePositions2[$i-1] && ($getRacePositions1[$i-1] >= "1" and $getRacePositions1[$i-1] <="25")
-                && $getRacePositions2[$i-1] != "RET (Non-driver/mechanical)" && $getRacePositions2[$i-1] != "DNS"){
-                    echo '<td class="underl">' . $getRacePositions1[$i-1] . "</td>";
-                }
-                else{
-                    echo '<td>' . $getRacePositions1[$i-1] . "</td>";
-                }
-
-
-                if($getRacePositions2[$i-1] < $getRacePositions1[$i-1] and ($getRacePositions2[$i-1] >= "1" and $getRacePositions2[$i-1] <="25")
-                and $getRacePositions1[$i-1] != "RET (Non-driver/mechanical)" and $getRacePositions1[$i-1] != "DNS"){
-                    echo '<td class="underl">' . $getRacePositions2[$i-1] . "</td>";
-                }
-                else{
-                    echo "<td>" . $getRacePositions2[$i-1] . "</td>";
-                }
-
-                echo "</tr>";
-                $i++;
-            }
+        <canvas id="lineChart" style="height: 18rem" ></canvas> 
+        <?php
+            echo '<p class ="xaxisfont"> Y-Axis: Median % Gap of fastest representative qualifying lap to Teammate (' . $drivername1 . " to " . $drivername2  . ")</p> ";
         ?>
+        <p class ="xaxisfont"> X-Axis: Session Number (ONLY representative sessions are included.) </p>
+    </div>
+
+    <div class ="box123">
+        <h2 id = "headingrace"> Race Pace Graph </h1>
+
+        <canvas id="raceChart" style="height: 18rem" ></canvas> 
+
+        <?php
+
+            echo '<p class ="xaxisfont"> Y-Axis: Median % Gap of fastest 75% of race laps lap to Teammate (' . $drivername1 . " to " . $drivername2  . ")</p> ";
+
+        ?>
+        <p class ="xaxisfont"> X-Axis: Session Number (ONLY races both drivers finished are included.) </p>
+
+    </div>
+
+   
+    <div class ="tabledata">
+        <table class="racedata">
+            <tr>
+            <th> Race Number </th>
+
+            <th> <?php echo $drivername1 ?> </th>
+            <th> <?php echo $drivername2 ?> </th>
+            </tr>
+            <?php 
+                $i=1;
+                while($i <= $countRaces){
+                    echo "<tr>";
+                    echo "<td>" . $i . "</td>";
+
+                    if($getRacePositions1[$i-1] < $getRacePositions2[$i-1] && ($getRacePositions1[$i-1] >= "1" and $getRacePositions1[$i-1] <="25")
+                    && $getRacePositions2[$i-1] != "RET (Non-driver/mechanical)" && $getRacePositions2[$i-1] != "DNS"){
+                        echo '<td class="underl">' . $getRacePositions1[$i-1] . "</td>";
+                    }
+                    else{
+                        echo '<td>' . $getRacePositions1[$i-1] . "</td>";
+                    }
+
+
+                    if($getRacePositions2[$i-1] < $getRacePositions1[$i-1] and ($getRacePositions2[$i-1] >= "1" and $getRacePositions2[$i-1] <="25")
+                    and $getRacePositions1[$i-1] != "RET (Non-driver/mechanical)" and $getRacePositions1[$i-1] != "DNS"){
+                        echo '<td class="underl">' . $getRacePositions2[$i-1] . "</td>";
+                    }
+                    else{
+                        echo "<td>" . $getRacePositions2[$i-1] . "</td>";
+                    }
+
+                    echo "</tr>";
+                    $i++;
+                }
+            ?>
+        </table>
+    </div>
+    <div class = "qualbox">
+    <table class = "qualifyingcomp">
+                <tr> 
+                    <th> Criteria </th>
+                    <th> <?php  echo $drivername1; ?> </th>
+                    <th> <?php  echo $drivername2; ?></th>
+                </tr>
+                <tr>
+                    <td> Head to Head Qualifying </td>
+                    <?php if($qualiscores[1] > $qualiscores[0]){
+                            echo '<td>' . $qualiscores[0] . "</td>";
+                            echo '<td class="underl">' . $qualiscores[1] . "</td>";
+                        }
+                        else if($qualiscores[0] > $qualiscores[1]){
+                            echo '<td class="underl"> ' . $qualiscores[0] . "</td>";
+                            echo '<td> ' . $qualiscores[1] . "</td>";
+                        }
+                        else{
+                            echo '<td> ' . $qualiscores[0] . "</td>";
+                            echo '<td>' . $qualiscores[1] . "</td>";
+                        }
+
+                    ?>
+                </tr>
+                <tr>
+                    <td> Median Qualifying % Difference (fastest lap in final session, outliers excluded) </td>
+                    <?php if(number_format(calculate_median($timeDelta2), 3) > 0){
+                            echo '<td>' . number_format(calculate_median($timeDelta2), 3) . "%" . "</td>";
+                            echo '<td class="underl"> ' . -1 * number_format(calculate_median($timeDelta2), 3) . "%". "</td>";
+                        }
+                        else{
+                            echo '<td class="underl"> ' . number_format(calculate_median($timeDelta2), 3) . "%". "</td>";
+                            echo '<td>' . -1 * number_format(calculate_median($timeDelta2), 3) . "%" . "</td>";
+
+                        }
+                    ?>
+
+                </tr>
     </table>
-  </div>
-  <table class = "qualifyingcomp">
+    </div>
+    <div class = "racebox">
+    <table class = "racecomp">
             <tr> 
                 <th> Criteria </th>
                 <th> <?php  echo $drivername1; ?> </th>
                 <th> <?php  echo $drivername2; ?></th>
             </tr>
             <tr>
-                <td> Head to Head Qualifying </td>
-                <?php if($qualiscores[1] > $qualiscores[0]){
-                        echo '<td>' . $qualiscores[0] . "</td>";
-                        echo '<td class="underl">' . $qualiscores[1] . "</td>";
-                     }
-                     else if($qualiscores[0] > $qualiscores[1]){
-                        echo '<td class="underl"> ' . $qualiscores[0] . "</td>";
-                        echo '<td> ' . $qualiscores[1] . "</td>";
-                     }
-                     else{
-                        echo '<td> ' . $qualiscores[0] . "</td>";
-                        echo '<td>' . $qualiscores[1] . "</td>";
-                     }
+                <td> Points (in races both drivers competed) </td>
+                <?php 
+                    if($countPoints[$driverNames[0]] > $countPoints[$driverNames[1]]){
+                        echo '<td class="underl">' . $countPoints[$driverNames[0]] . "</td>";
+                        echo '<td>' . $countPoints[$driverNames[1]] . "</td>";
 
-                ?>
+                    }
+                    else if($countPoints[$driverNames[0]] < $countPoints[$driverNames[1]]){
+                        echo '<td>' . $countPoints[$driverNames[0]] . "</td>";
+                        echo '<td class="underl">' . $countPoints[$driverNames[1]] . "</td>";
+                    }
+                    else{
+                        echo '<td>' . $countPoints[$driverNames[0]] . "</td>";
+                        echo '<td>' . $countPoints[$driverNames[1]] . "</td>";
+                    }
+                ?> 
             </tr>
             <tr>
-                <td> Median Qualifying % Difference (fastest lap in final session, outliers excluded) </td>
-                <?php if(number_format(calculate_median($timeDelta2), 3) > 0){
-                        echo '<td>' . number_format(calculate_median($timeDelta2), 3) . "%" . "</td>";
-                        echo '<td class="underl"> ' . -1 * number_format(calculate_median($timeDelta2), 3) . "%". "</td>";
-                    }
-                    else{
-                        echo '<td class="underl"> ' . number_format(calculate_median($timeDelta2), 3) . "%". "</td>";
-                        echo '<td>' . -1 * number_format(calculate_median($timeDelta2), 3) . "%" . "</td>";
+                    <td> Head to Head Races </td>
+                    <?php 
+                    if($driverWins[0] > $driverWins[1]){
+                        echo '<td class="underl">' . $driverWins[0] . "</td>";
+                        echo '<td>' . $driverWins[1] . "</td>";
 
                     }
-                ?>
+                    else if($driverWins[0] < $driverWins[1]){
+                        echo '<td>' . $driverWins[0] . "</td>";
+                        echo '<td class="underl">' . $driverWins[1] . "</td>";
+                    }
+                    else{
+                        echo '<td>' . $driverWins[0] . "</td>";
+                        echo '<td>' . $driverWins[1] . "</td>";
+                    }
+                ?> 
+            </tr>
+            <tr>
+                    <td> Points Per Race (excluding Non-Driver DNFs/DNS) </td>
+                    <?php 
+                    if($ppr1 > $ppr2){
+                        echo '<td class="underl">' . $ppr1 . "</td>";
+                        echo '<td>' . $ppr2 . "</td>";
+
+                    }
+                    else if($ppr1 < $ppr2){
+                        echo '<td>' . $ppr1 . "</td>";
+                        echo '<td class="underl">' . $ppr2 . "</td>";
+                    }
+                    else{
+                        echo '<td>' . $ppr1 . "</td>";
+                        echo '<td>' . $ppr2 . "</td>";
+                    }
+                ?> 
+            </tr>
+            <tr>
+                    <td> Median Race % Difference (fastest 75% of Laps in races both drivers finished) </td>
+                    
+                    <?php if($medGap > 0){
+                            echo '<td>' . $medGap . "%" . "</td>";
+                            echo '<td class="underl"> ' . -1 * $medGap . "%". "</td>";
+                        }
+                        else{
+                            echo '<td class="underl"> ' . $medGap . "%". "</td>";
+                            echo '<td>' . -1 * $medGap . "%" . "</td>";
+
+                        }
+                    ?>
 
             </tr>
-  </table>
-  <table class = "racecomp">
-        <tr> 
-            <th> Criteria </th>
-            <th> <?php  echo $drivername1; ?> </th>
-            <th> <?php  echo $drivername2; ?></th>
-        </tr>
-        <tr>
-            <td> Points (in races both drivers competed) </td>
-            <?php 
-                if($countPoints[$driverNames[0]] > $countPoints[$driverNames[1]]){
-                    echo '<td class="underl">' . $countPoints[$driverNames[0]] . "</td>";
-                    echo '<td>' . $countPoints[$driverNames[1]] . "</td>";
-
-                }
-                else if($countPoints[$driverNames[0]] < $countPoints[$driverNames[1]]){
-                    echo '<td>' . $countPoints[$driverNames[0]] . "</td>";
-                    echo '<td class="underl">' . $countPoints[$driverNames[1]] . "</td>";
-                }
-                else{
-                    echo '<td>' . $countPoints[$driverNames[0]] . "</td>";
-                    echo '<td>' . $countPoints[$driverNames[1]] . "</td>";
-                }
-            ?> 
-        </tr>
-        <tr>
-                <td> Head to Head Races </td>
-                <?php 
-                if($driverWins[0] > $driverWins[1]){
-                    echo '<td class="underl">' . $driverWins[0] . "</td>";
-                    echo '<td>' . $driverWins[1] . "</td>";
-
-                }
-                else if($driverWins[0] < $driverWins[1]){
-                    echo '<td>' . $driverWins[0] . "</td>";
-                    echo '<td class="underl">' . $driverWins[1] . "</td>";
-                }
-                else{
-                    echo '<td>' . $driverWins[0] . "</td>";
-                    echo '<td>' . $driverWins[1] . "</td>";
-                }
-            ?> 
-        </tr>
-        <tr>
-                <td> Points Per Race (excluding Non-Driver DNFs/DNS) </td>
-                <?php 
-                if($ppr1 > $ppr2){
-                    echo '<td class="underl">' . $ppr1 . "</td>";
-                    echo '<td>' . $ppr2 . "</td>";
-
-                }
-                else if($ppr1 < $ppr2){
-                    echo '<td>' . $ppr1 . "</td>";
-                    echo '<td class="underl">' . $ppr2 . "</td>";
-                }
-                else{
-                    echo '<td>' . $ppr1 . "</td>";
-                    echo '<td>' . $ppr2 . "</td>";
-                }
-            ?> 
-        </tr>
-        <tr>
-                <td> Median Race % Difference (fastest 75% of Laps in races both drivers finished) </td>
-                
-                <?php if($medGap > 0){
-                        echo '<td>' . $medGap . "%" . "</td>";
-                        echo '<td class="underl"> ' . -1 * $medGap . "%". "</td>";
-                    }
-                    else{
-                        echo '<td class="underl"> ' . $medGap . "%". "</td>";
-                        echo '<td>' . -1 * $medGap . "%" . "</td>";
-
-                    }
-                ?>
-
-        </tr>
-  </table>
-  <div class = "Footer1">
-     
-    <h3> <a href = "index.php"> <h3> Try Another Comparison </h3> </a> </h3> 
-  </div>
+    </table>
+    </div>
+    <div class = "Footer1">
+        
+        <h3> <a href = "index.php"> <h3> Try Another Comparison </h3> </a> </h3> 
+    </div>
 </body>
 </html>
