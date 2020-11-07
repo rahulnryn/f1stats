@@ -419,20 +419,13 @@
         }
     
         .tabledata{
-            position: absolute;
-            font-size: 100%;
-            width: 100%;
-            height: 100%;
-            top: 70%;
-            right: 0%;
-
         }
         .Footer1{
             position: absolute;
             font-size: 100%;
 
             top: 1%;
-            right: 1%;
+            right: 5%;
 
         }
         h3{
@@ -446,21 +439,24 @@
             height: 40%;
             
             top: 137%;
+            left: 0%;
         }
         .racedata{
             position: absolute;
             border-collapse: collapse;
-            border: 3px solid black;
+            border: 0.2rem solid black;
             border-spacing: 5rem;
-            width:50%;
-            height:5%;
+            width: 50%;
+            height: 10%;
+            top: 70%;
+            right: 50%;
             font-size: 100%;
             color: black;
             background-color: #fed8b1;
      
         }
         .racedata th{
-            font-size: 130%;
+            font-size: 100%;
             border-left: 2px solid grey;
             border-bottom: 2px solid grey;
             font-family: "Gotham-Black" ;
@@ -468,7 +464,7 @@
         }
         .racedata td{
 
-            font-size: 130%;
+            font-size: 50%;
 
             border-left: 2px solid grey;
             border-bottom: 2px solid grey;
@@ -508,7 +504,6 @@
             font-size: 100%;
             top: 80%;
             right: 10%;
-            top: 80%;       
         }
        
         .qualifyingcomp{
@@ -534,8 +529,8 @@
         .racecomp{
             position: absolute;
             background-color: #EEEEEE;
-
-     
+            width: 30%;
+            height: 5%;
             border-collapse: collapse;
             border: 3px solid black;
             border-spacing: 5rem;
