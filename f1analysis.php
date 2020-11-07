@@ -436,7 +436,6 @@
             position: absolute;
             font-size: 100%;
             width: 40%;
-            height: 40%;
             
             top: 135%;
             left: 0%;
@@ -494,7 +493,7 @@
             height: 5%;
             font-size: 100%;
             right: 10%;
-            top: 12%;
+            top: 10%;
         }
         .racebox{
         
@@ -561,11 +560,11 @@
             datasets: [
                 {
                     label: "Median % GAP",
-                    fillColor: "rgba(220,220,220,0.2)",
-                    strokeColor: "black",
-                    pointColor: "red",
+                    strokeColor: "blue",
+                    fillColor: "rgba(220,220,220,1)",
+                    pointColor: "black",
                     pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
+                    pointHighlightFill: "white",
                     pointHighlightStroke: "rgba(220,220,220,1)",
                     data: <?php  echo json_encode($timeDelta2); ?>
                 }
@@ -583,11 +582,11 @@
             datasets: [
                 {
                     label: "Median % GAP in Races",
-                    fillColor: "rgba(220,220,220,0.2)",
-                    strokeColor: "black",
-                    pointColor: "red",
+                    strokeColor: "blue",
+                    fillColor: "rgba(220,220,220,1)",
+                    pointColor: "black",
                     pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
+                    pointHighlightFill: "white",
                     pointHighlightStroke: "rgba(220,220,220,1)",
                     data: <?php  echo json_encode($allRaces); ?>
                 }
