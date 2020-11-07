@@ -291,6 +291,7 @@
                     //}
                 }
                 $timeDelta2 = remove_outliers($timeDelta2, 3);
+
             
         }
         $qualinames = array_keys($countQualiWins);
@@ -384,14 +385,13 @@
                     //echo($first[$i] . "\n");
                     //echo($second[$i] . "\n");
                     $delta = number_format((double)computeDiff($first[$i], $second[$i]), 3);
-                    if($delta > -3 && $delta < 3)
-                        array_push($diff, $delta);
+                    array_push($diff, $delta);
                     //echo($delta);
                 }
                 //echo("\n");
                 //echo(calculate_median($diff) . "\n");
                 $diff = remove_outliers($diff, 3);
-                
+
                 array_push($allRaces, calculate_mean($diff));
             }
         }
@@ -454,10 +454,10 @@
         .box123{
             position: absolute;
             font-size: 40%;
-            width: 30%;
+            width: 40%;
             
             top: 105%;
-            left: 58%;
+            left: 56%;
         }
         .racedata{
             position: absolute;
@@ -475,19 +475,18 @@
         }
         .racedata th{
             font-size: 100%;
-            border-left: 2px solid grey;
-            border-bottom: 2px solid grey;
-            font-family: "Gotham-Black" ;
+            border-left: 0.1rem solid grey;
+            border-bottom: 0.1rem solid grey;
+            font-family: "Georgia" ;
 
         }
         .racedata td{
 
-            font-size: 50%;
+            font-size: 100%;
 
-            border-left: 2px solid grey;
-            border-bottom: 2px solid grey;
-            font-size: 16px;
-            font-family: "Gotham-Black" ;
+            border-left:  0.1rem solid grey;
+            border-bottom: 0.1rem solid grey;
+            font-family: "Georgia" ;
 
 
         }
@@ -499,8 +498,8 @@
         }
         .xaxisfont{
             text-decoration: underline;
-            font-size: 13px;
-            font-family: "Fira";
+            font-size: 100%;
+            font-family: "Georgia";
         }
         td.underl{
             background: #32CD32;
@@ -525,47 +524,50 @@
         }
        
         .qualifyingcomp{
+            border: 0.14rem solid black;
+
             position: absolute;
             background-color: #EEEEEE;
 
             border-collapse: collapse;
-            border: 3px solid black;
+            border-color: black;
             border-spacing: 5rem;
             color: black;
         }
         .qualifyingcomp td{
-            border-left: 2px solid grey;
-            border-bottom: 2px solid grey;
+            border-left: 0.1rem solid grey;
+            border-bottom: 0.1rem solid grey;
             font-size:100%;
 
         }
         .qualifyingcomp th{
             font-size: 100%;
-            border-left: 2px solid grey;
-            border-bottom: 2px solid grey;
+            border-left: 0.1rem solid grey;
+            border-bottom: 0.1rem solid grey;
         }
         .racecomp{
+
             position: absolute;
             background-color: #EEEEEE;
-            width: 30%;
-            height: 5%;
+            width: 100%;
+            height: 10%;
             border-collapse: collapse;
-            border: 3px solid black;
+            border: 0.14rem solid black;
             border-spacing: 5rem;
             color: black;
         }
         .racecomp td{
             font-size:100%;
 
-            border-left: 2px solid grey;
-            border-bottom: 2px solid grey;
+            border-left: 0.1rem solid grey;
+            border-bottom: 0.1rem solid grey;
 
         }
         .racecomp th{
             font-size:100%;
 
-            border-left: 2px solid grey;
-            border-bottom: 2px solid grey;
+            border-left: 0.1rem solid grey;
+            border-bottom: 0.1rem solid grey;
         }
    
        
