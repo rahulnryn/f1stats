@@ -119,7 +119,7 @@
           </select>
           <br> <br>
           <input type="checkbox" id="racecheck" name="racecheck" value="Yes">
-          <label class="checkbox"> Complete Race Pace analysis (may take a while unless previously computed) </label><br>
+          <label class="checkbox"> Show Race Pace analysis (may take a while unless previously computed) </label><br>
           <br> <br>
           <input type="submit" name="submit" value="Submit" class="subbut" />
 
