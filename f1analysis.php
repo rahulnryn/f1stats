@@ -5,6 +5,22 @@
     {
         return strpos($haystack, $needle) !== false;
     }
+    function calculate_mean($array){
+        $mean = number_format((double)array_sum($array) / count($array), 3);
+        return $mean;
+    }
+    function remove_outliers($dataset, $magnitude = 1) {
+
+        $count = count($dataset);
+        $mean = array_sum($dataset) / $count; // Calculate the mean
+        $deviation = sqrt(array_sum(array_map("sd_square", $dataset, array_fill(0, $count, $mean))) / $count) * $magnitude; // Calculate standard deviation and times by magnitude
+      
+        return array_filter($dataset, function($x) use ($mean, $deviation) { return ($x <= $mean + $deviation && $x >= $mean - $deviation); }); // Return filtered array of values that lie within $mean +- $deviation.
+      }
+      
+      function sd_square($x, $mean) {
+        return pow($x - $mean, 2);
+      } 
     function converToSeconds($timestr){
         $minutes = ((double)$timestr[0]) * 60;
         $str1 = $timestr[2] . $timestr[3];
@@ -264,17 +280,17 @@
                 
                 if($cdq1 == $drivername1 and $cdq2 == $drivername2){
                     $diff = number_format((double)computeDiff($driver1time, $driver2time), 3);
-                    if($diff > -2 && $diff < 2){
+                    //if($diff > -2 && $diff < 2){
                         array_push($timeDelta2, $diff);
-                    }
+                    //}
                 }             
                 else if($cdq2 == $drivername1 and $cdq1 == $drivername2){
                     $diff = number_format((double)computeDiff($driver2time, $driver1time), 3);
-                    if($diff > -2 && $diff < 2){
+                  //if($diff > -2 && $diff < 2){
                         array_push($timeDelta2, $diff);
-                    }
+                    //}
                 }
-
+                $timeDelta2 = remove_outliers($timeDelta2, 3);
             
         }
         $qualinames = array_keys($countQualiWins);
@@ -374,9 +390,12 @@
                 }
                 //echo("\n");
                 //echo(calculate_median($diff) . "\n");
-                array_push($allRaces, number_format(calculate_median($diff), 3));
+                $diff = remove_outliers($diff, 3);
+                
+                array_push($allRaces, calculate_mean($diff));
             }
         }
+
         $medGap = (number_format(calculate_median($allRaces), 3));
         $current = "";
         for($i = 0; $i < count($allRaces); $i++){
@@ -424,8 +443,8 @@
             position: absolute;
             font-size: 100%;
 
-            top: 1%;
-            right: 5%;
+            bottom: -80%;
+            left: 0%;
 
         }
         h3{
@@ -434,11 +453,11 @@
         
         .box123{
             position: absolute;
-            font-size: 100%;
-            width: 40%;
+            font-size: 40%;
+            width: 30%;
             
-            top: 135%;
-            left: 0%;
+            top: 105%;
+            left: 58%;
         }
         .racedata{
             position: absolute;
@@ -446,7 +465,7 @@
             border: 0.2rem solid black;
             border-spacing: 5rem;
             width: 50%;
-            height: 10%;
+            height: 80%;
             top: 70%;
             right: 50%;
             font-size: 100%;
@@ -489,20 +508,20 @@
         }
         .qualbox{
             position: absolute;
-            width: 30%;
+            width: 40%;
             height: 5%;
             font-size: 100%;
-            right: 10%;
+            right: 5%;
             top: 10%;
         }
         .racebox{
         
             position: absolute;
-            width: 30%;
+            width: 40%;
             height: 5%;
             font-size: 100%;
             top: 70%;
-            right: 10%;
+            right: 5%;
         }
        
         .qualifyingcomp{
@@ -603,7 +622,7 @@
 </head>
 <body>
     <div class="box">
-    <h1> <?php echo $drivername1 . " vs " . $drivername2 . " (" . $getYears . ")"  ?> </h1>
+    <h2> <?php echo $drivername1 . " vs " . $drivername2 . " (" . $getYears . ")"  ?> </h2>
 
         <canvas id="lineChart" style="height: 18rem" ></canvas> 
         <?php
@@ -613,13 +632,12 @@
     </div>
 
     <div class ="box123">
-        <h2 id = "headingrace"> Race Pace Graph </h1>
 
         <canvas id="raceChart" style="height: 18rem" ></canvas> 
 
         <?php
 
-            echo '<p class ="xaxisfont"> Y-Axis: Median % Gap of fastest 75% of race laps lap to Teammate (' . $drivername1 . " to " . $drivername2  . ")</p> ";
+            echo '<p class ="xaxisfont"> Y-Axis: Average % Gap of fastest 75% of race laps lap to Teammate (' . $drivername1 . " to " . $drivername2  . ")</p> ";
 
         ?>
         <p class ="xaxisfont"> X-Axis: Session Number (ONLY races both drivers finished are included.) </p>
@@ -687,7 +705,7 @@
                     ?>
                 </tr>
                 <tr>
-                    <td> Median Qualifying % Difference (fastest lap in final session, outliers excluded) </td>
+                    <td> Median Qualifying % gap, fastest lap in final session) </td>
                     <?php if(number_format(calculate_median($timeDelta2), 3) > 0){
                             echo '<td>' . number_format(calculate_median($timeDelta2), 3) . "%" . "</td>";
                             echo '<td class="underl"> ' . -1 * number_format(calculate_median($timeDelta2), 3) . "%". "</td>";
@@ -764,7 +782,7 @@
                 ?> 
             </tr>
             <tr>
-                    <td> Median Race % Difference (fastest 75% of Laps in races both drivers finished) </td>
+                    <td> Median Race Time % Gap (over the season) </td>
                     
                     <?php if($medGap > 0){
                             echo '<td>' . $medGap . "%" . "</td>";
