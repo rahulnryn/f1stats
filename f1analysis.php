@@ -328,7 +328,7 @@
     if( ($dId1 == 'fisichella' || $dId2 == 'fisichella') && $getYears == '2009' && $check){
         $ender = 12;
     }
-    sleep(0.2);
+    sleep(0.3);
     if(!file_exists($getYears . $getTeams . '.txt')){
         for($t = $starter; $t <= $ender; $t++){
             sleep(0.5);
@@ -385,8 +385,14 @@
                 $current .= ',';
             }
         }
-     
+        if($check && !file_exists($getYears . $getTeams . '.txt') && $getYears >= "1996"){
+            $filename = $getYears . $getTeams . '.txt'; 
+            $fp = fopen($filename,"w");  
+            fwrite($fp,$current); 
+            fclose($fp);  
+        }
     }
+
     else{
         $allRaces = array();
         $racegapdata = fopen( $getYears . $getTeams . '.txt','r');
