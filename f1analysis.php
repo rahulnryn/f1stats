@@ -438,7 +438,7 @@
             width: 40%;
             height: 40%;
             
-            top: 137%;
+            top: 135%;
             left: 0%;
         }
         .racedata{
@@ -494,7 +494,7 @@
             height: 5%;
             font-size: 100%;
             right: 10%;
-            top: 20%;
+            top: 12%;
         }
         .racebox{
         
@@ -502,7 +502,7 @@
             width: 30%;
             height: 5%;
             font-size: 100%;
-            top: 80%;
+            top: 70%;
             right: 10%;
         }
        
@@ -628,7 +628,6 @@
     </div>
 
    
-    <div class ="tabledata">
         <table class="racedata">
             <tr>
             <th> Race Number </th>
@@ -664,7 +663,6 @@
                 }
             ?>
         </table>
-    </div>
     <div class = "qualbox">
     <table class = "qualifyingcomp">
                 <tr> 
