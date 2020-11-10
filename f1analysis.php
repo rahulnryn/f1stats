@@ -18,7 +18,7 @@
         $aFit = (array_sum($Y) - $bFit * array_sum($logX)) / $n;
         $Yfit = array();
         foreach($X as $x) {
-            $Yfit[] = $aFit + $bFit * log($x);
+            $Yfit[] = number_format($aFit + $bFit * log($x),3);
         }
         return $Yfit;
     }
