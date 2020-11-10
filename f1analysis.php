@@ -604,9 +604,22 @@
   <script language="JavaScript"><!--
     var data = {
             labels: <?php echo json_encode($rounds); ?>,
-
-            data: [
+            axisX: {
+                    title: "Rounds",
+                    valueFormatString: "####",
+                    interval: 1
+                },
+            axisY: {
+                 logarithmic: true, //change it to false
+                    lineColor: "#6D78AD",
+                    gridThickness: 0,
+                    lineThickness: 1,
+                    labelFormatter: addSymbols
+            },
+            datasets: [
+                
                 {
+        
                     type: "line",
                     label: "Median % GAP",
                     strokeColor: "blue",
@@ -615,7 +628,7 @@
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "white",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    dataPoints: <?php  echo json_encode($timeDelta2); ?>
+                    data: <?php  echo json_encode($timeDelta2); ?>
                 },
                 {
         
@@ -625,7 +638,7 @@
                     fillColor: "transparent",
         		    showInLegend: true,
                     markerSize: 0,
-                    dataPoints: <?php  echo json_encode($qualTrend); ?>
+                    data: <?php  echo json_encode($qualTrend); ?>
                 }
             ]
         
@@ -637,8 +650,19 @@
     };
     var data2 = {
             labels: <?php echo json_encode($rounds); ?>,
-
-            data: [
+            axisX: {
+                    title: "Rounds",
+                    valueFormatString: "####",
+                    interval: 1
+            },
+            axisY: {
+                 logarithmic: true, //change it to false
+                    lineColor: "#6D78AD",
+                    gridThickness: 0,
+                    lineThickness: 1,
+                    labelFormatter: addSymbols
+            },
+            datasets [
                 {
                     label: "Median % GAP in Races",
                     strokeColor: "blue",
@@ -647,7 +671,7 @@
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "white",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    dataPoints: <?php  echo json_encode($allRaces); ?>
+                    data: <?php  echo json_encode($allRaces); ?>
                 },
                 {
                     type: "line",
@@ -656,7 +680,7 @@
                     fillColor: "transparent",
                     showInLegend: true,
                     markerSize: 0,
-                    dataPoints: <?php  echo json_encode($raceTrend); ?>
+                    data: <?php  echo json_encode($raceTrend); ?>
                 }
             ]
         
