@@ -667,7 +667,7 @@
 
         <canvas id="lineChart" style="height: 18rem" ></canvas> 
         <?php
-            echo '<p class ="xaxisfont"> Y-Axis: Median % Gap of fastest representative qualifying lap to Teammate (' . $drivername1 . " to " . $drivername2  . ")</p> ";
+            echo '<p class ="xaxisfont"> Y-Axis: Median % Gap of fastest lap in session both drivers competed (' . $drivername1 . " to " . $drivername2  . ")</p> ";
         ?>
         <p class ="xaxisfont"> X-Axis: Session Number (ONLY representative sessions are included.) </p>
     </div>
