@@ -1,5 +1,28 @@
 <?php
     error_reporting(0);
+    
+    
+
+    function calc_trend($X, $Y){
+        
+        $logX = array_map('log', $X);
+
+        $n = count($X);
+        $square = create_function('$x', 'return pow($x,2);');
+        $x_squared = array_sum(array_map($square, $logX));
+        $xy = array_sum(array_map(create_function('$x,$y', 'return $x*$y;'), $logX, $Y));
+
+        $bFit = ($n * $xy - array_sum($Y) * array_sum($logX)) /
+                ($n * $x_squared - pow(array_sum($logX), 2));
+
+        $aFit = (array_sum($Y) - $bFit * array_sum($logX)) / $n;
+        $Yfit = array();
+        foreach($X as $x) {
+            $Yfit[] = $aFit + $bFit * log($x);
+        }
+        return $Yfit;
+    }
+
 
     function contains($haystack, $needle)
     {
@@ -294,6 +317,8 @@
 
             
         }
+        if(count($timeDelta2) >= count($rounds)/2)
+            $qualTrend = calc_trend($rounds, $timeDelta2);
         $qualinames = array_keys($countQualiWins);
         $qualiscores = array_values($countQualiWins);
     }
@@ -420,6 +445,8 @@
         }
         $medGap = (number_format(calculate_median($allRaces), 3));
     }
+    if(count($allRaces) >= count($rounds)/2)
+        $raceTrend = calc_trend($rounds, $allRaces);
 ?>
 
 
@@ -589,6 +616,12 @@
                     pointHighlightStroke: "rgba(220,220,220,1)",
                     data: <?php  echo json_encode($timeDelta2); ?>
                 }
+                {
+                    label: "Form Trend",
+                    strokeColor: "red",
+                    fillColor: "transparent",
+                    data: <?php  echo json_encode($qualTrend); ?>
+                }
             ]
         
     };
@@ -604,12 +637,18 @@
                 {
                     label: "Median % GAP in Races",
                     strokeColor: "blue",
-                    fillColor: "rgba(220,220,220,1)",
+                    fillColor: "transparent",
                     pointColor: "black",
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "white",
                     pointHighlightStroke: "rgba(220,220,220,1)",
                     data: <?php  echo json_encode($allRaces); ?>
+                }
+                {
+                    label: "Form Trend",
+                    strokeColor: "red",
+                    fillColor: "transparent",
+                    data: <?php  echo json_encode($raceTrend); ?>
                 }
             ]
         
@@ -707,7 +746,7 @@
                     ?>
                 </tr>
                 <tr>
-                    <td> Median Qualifying % gap, fastest lap in final session) </td>
+                    <td> Median Qualifying % gap (fastest lap in final session) </td>
                     <?php if(number_format(calculate_median($timeDelta2), 3) > 0){
                             echo '<td>' . number_format(calculate_median($timeDelta2), 3) . "%" . "</td>";
                             echo '<td class="underl"> ' . -1 * number_format(calculate_median($timeDelta2), 3) . "%". "</td>";
