@@ -602,33 +602,22 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
   <script language="JavaScript"><!--
-    var data = {
-            labels: <?php echo json_encode($rounds); ?>,
-
-            datasets: [
-                {
-                    label: "Median % GAP",
-                    strokeColor: "blue",
-                    fillColor: "rgba(220,220,220,1)",
-                    pointColor: "black",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "white",
-                    pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: <?php  echo json_encode($timeDelta2); ?>
-                },
-                {
-        
-                    type: "line",
-        		    axisYType: "secondary",
-                    strokeColor: "red",
-                    lineThickness: 1,
-                    fillColor: "transparent",
-        		    showInLegend: true,
-                    markerSize: 0,
-                    data: <?php  echo json_encode($qualTrend); ?>
-                }
-            ]
-        
+    title:{
+      text: "Qualifying Data"  
+      },
+      data: [
+      {        
+        type: "line",
+        dataPoints: [
+            {<?php  for($i = 0; $i < count($rounds); $i++) echo "{ x: " . json_encode($rounds[$i]) .  ", y: " . json_encode($timeDelta[$i]) . "},"; ?>}
+        ]
+      },
+      {        
+        type: "line",
+        dataPoints: [
+                {<?php  for($i = 0; $i < count($rounds); $i++) echo "{ x: " . json_encode($rounds[$i]) .  ", y: " . json_encode($qualTrend[$i]) . "},"; ?>}
+        ]
+      }
     };
     var options = {
         responsive: true,
