@@ -602,22 +602,22 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
   <script language="JavaScript"><!--
-    title:{
-      text: "Qualifying Data"  
-      },
+    var data1 = {
       data: [
-      {        
-        type: "line",
-        dataPoints: [
-            {<?php  for($i = 0; $i < count($rounds); $i++) echo "{ x: " . json_encode($rounds[$i]) .  ", y: " . json_encode($timeDelta[$i]) . "},"; ?>}
-        ]
-      },
-      {        
-        type: "line",
-        dataPoints: [
-                {<?php  for($i = 0; $i < count($rounds); $i++) echo "{ x: " . json_encode($rounds[$i]) .  ", y: " . json_encode($qualTrend[$i]) . "},"; ?>}
-        ]
-      }
+          {        
+            type: "line",
+            dataPoints: [
+                {<?php  for($i = 0; $i < count($rounds); $i++) echo "{ x: " . json_encode($rounds[$i]) .  ", y: " . json_encode($timeDelta[$i]) . "},"; ?>}
+            ]
+          },
+          {        
+            type: "line",
+            dataPoints: [
+                    {<?php  for($i = 0; $i < count($rounds); $i++) echo "{ x: " . json_encode($rounds[$i]) .  ", y: " . json_encode($qualTrend[$i]) . "},"; ?>}
+            ]
+          }
+      ]
+  
     };
     var options = {
         responsive: true,
@@ -654,7 +654,7 @@
   
     window.onload = function(){
         window.lineChart = new Chart(document.getElementById("raceChart").getContext("2d")).Line(data2, options);   
-        window.lineChart = new Chart(document.getElementById("lineChart").getContext("2d")).Line(data, options);        
+        window.lineChart = new Chart(document.getElementById("lineChart").getContext("2d")).Line(data1, options);        
      
     }
   --></script>
