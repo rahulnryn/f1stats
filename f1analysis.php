@@ -604,23 +604,9 @@
   <script language="JavaScript"><!--
     var data = {
             labels: <?php echo json_encode($rounds); ?>,
-            axisX: {
-                    title: "Rounds",
-                    valueFormatString: "####",
-                    interval: 1
-                },
-            axisY: {
-                 logarithmic: true, //change it to false
-                    lineColor: "#6D78AD",
-                    gridThickness: 0,
-                    lineThickness: 1,
-                    labelFormatter: addSymbols
-            },
+
             datasets: [
-                
                 {
-        
-                    type: "line",
                     label: "Median % GAP",
                     strokeColor: "blue",
                     fillColor: "rgba(220,220,220,1)",
@@ -650,19 +636,8 @@
     };
     var data2 = {
             labels: <?php echo json_encode($rounds); ?>,
-            axisX: {
-                    title: "Rounds",
-                    valueFormatString: "####",
-                    interval: 1
-            },
-            axisY: {
-                 logarithmic: true, //change it to false
-                    lineColor: "#6D78AD",
-                    gridThickness: 0,
-                    lineThickness: 1,
-                    labelFormatter: addSymbols
-            },
-            datasets [
+
+            datasets: [
                 {
                     label: "Median % GAP in Races",
                     strokeColor: "blue",
@@ -699,7 +674,7 @@
 
         <canvas id="lineChart" style="height: 18rem" ></canvas> 
         <?php
-            echo '<p class ="xaxisfont"> Y-Axis: Median % Gap of fastest lap in session both drivers competed (' . $drivername1 . " to " . $drivername2  . ")</p> ";
+            echo '<p class ="xaxisfont"> Y-Axis: Median % Gap of fastest lap in final session both drivers competed (' . $drivername1 . " to " . $drivername2  . ")</p> ";
         ?>
         <p class ="xaxisfont"> X-Axis: Session Number (ONLY representative sessions are included.) </p>
     </div>
