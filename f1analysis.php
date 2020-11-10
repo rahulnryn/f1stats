@@ -615,11 +615,12 @@
                     pointHighlightFill: "white",
                     pointHighlightStroke: "rgba(220,220,220,1)",
                     data: <?php  echo json_encode($timeDelta2); ?>
-                }
+                },
                 {
                     label: "Form Trend",
                     strokeColor: "red",
                     fillColor: "transparent",
+                    markerSize: 0,
                     data: <?php  echo json_encode($qualTrend); ?>
                 }
             ]
@@ -637,17 +638,18 @@
                 {
                     label: "Median % GAP in Races",
                     strokeColor: "blue",
-                    fillColor: "transparent",
+                    fillColor: "rgba(220,220,220,1)",
                     pointColor: "black",
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "white",
                     pointHighlightStroke: "rgba(220,220,220,1)",
                     data: <?php  echo json_encode($allRaces); ?>
-                }
+                },
                 {
                     label: "Form Trend",
                     strokeColor: "red",
                     fillColor: "transparent",
+                    markerSize: 0,
                     data: <?php  echo json_encode($raceTrend); ?>
                 }
             ]
