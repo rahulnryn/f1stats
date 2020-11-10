@@ -605,8 +605,9 @@
     var data = {
             labels: <?php echo json_encode($rounds); ?>,
 
-            datasets: [
+            data: [
                 {
+                    type: "line",
                     label: "Median % GAP",
                     strokeColor: "blue",
                     fillColor: "rgba(220,220,220,1)",
@@ -614,7 +615,7 @@
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "white",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: <?php  echo json_encode($timeDelta2); ?>
+                    dataPoints: <?php  echo json_encode($timeDelta2); ?>
                 },
                 {
         
@@ -624,7 +625,7 @@
                     fillColor: "transparent",
         		    showInLegend: true,
                     markerSize: 0,
-                    data: <?php  echo json_encode($qualTrend); ?>
+                    dataPoints: <?php  echo json_encode($qualTrend); ?>
                 }
             ]
         
@@ -637,7 +638,7 @@
     var data2 = {
             labels: <?php echo json_encode($rounds); ?>,
 
-            datasets: [
+            data: [
                 {
                     label: "Median % GAP in Races",
                     strokeColor: "blue",
@@ -646,7 +647,7 @@
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "white",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: <?php  echo json_encode($allRaces); ?>
+                    dataPoints: <?php  echo json_encode($allRaces); ?>
                 },
                 {
                     type: "line",
@@ -655,7 +656,7 @@
                     fillColor: "transparent",
                     showInLegend: true,
                     markerSize: 0,
-                    data: <?php  echo json_encode($raceTrend); ?>
+                    dataPoints: <?php  echo json_encode($raceTrend); ?>
                 }
             ]
         
