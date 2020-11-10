@@ -622,6 +622,7 @@
         		    axisYType: "secondary",
                     strokeColor: "red",
                     fillColor: "transparent",
+        		    showInLegend: false,
                     markerSize: 0,
                     data: <?php  echo json_encode($qualTrend); ?>
                 }
@@ -652,6 +653,7 @@
                     axisYType: "secondary",
                     strokeColor: "red",
                     fillColor: "transparent",
+                    showInLegend: false,
                     markerSize: 0,
                     data: <?php  echo json_encode($raceTrend); ?>
                 }
