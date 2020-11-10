@@ -621,6 +621,7 @@
                     type: "line",
         		    axisYType: "secondary",
                     strokeColor: "red",
+                    lineThickness: 1,
                     fillColor: "transparent",
         		    showInLegend: true,
                     markerSize: 0,
@@ -653,6 +654,7 @@
                     axisYType: "secondary",
                     strokeColor: "red",
                     fillColor: "transparent",
+                    lineThickness: 1,
                     showInLegend: true,
                     markerSize: 0,
                     data: <?php  echo json_encode($raceTrend); ?>
