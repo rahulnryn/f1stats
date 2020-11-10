@@ -619,6 +619,7 @@
                 {
         
                     type: "line",
+        		    axisYType: "secondary",
                     strokeColor: "red",
                     fillColor: "transparent",
                     markerSize: 0,
@@ -648,6 +649,7 @@
                 },
                 {
                     type: "line",
+                    axisYType: "secondary",
                     strokeColor: "red",
                     fillColor: "transparent",
                     markerSize: 0,
