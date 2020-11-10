@@ -617,7 +617,8 @@
                     data: <?php  echo json_encode($timeDelta2); ?>
                 },
                 {
-                    label: "Form Trend",
+        
+                    type: "line",
                     strokeColor: "red",
                     fillColor: "transparent",
                     markerSize: 0,
@@ -646,7 +647,7 @@
                     data: <?php  echo json_encode($allRaces); ?>
                 },
                 {
-                    label: "Form Trend",
+                    type: "line",
                     strokeColor: "red",
                     fillColor: "transparent",
                     markerSize: 0,
