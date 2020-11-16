@@ -37,8 +37,15 @@
         $count = count($dataset);
         $mean = array_sum($dataset) / $count; // Calculate the mean
         $deviation = sqrt(array_sum(array_map("sd_square", $dataset, array_fill(0, $count, $mean))) / $count) * $magnitude; // Calculate standard deviation and times by magnitude
-      
-        return array_filter($dataset, function($x) use ($mean, $deviation) { return ($x <= $mean + $deviation && $x >= $mean - $deviation); }); // Return filtered array of values that lie within $mean +- $deviation.
+        for($i = 0; $i < count($dataset); $i++){
+            if($dataset[$i] <= $mean + $deviation){
+                $dataset[$i] = null;
+            }
+            if($dataset[$i] >= $mean - $deviation){
+                $dataset[$i] = null;  
+            }
+        }
+        return $dataset;
       }
       
       function sd_square($x, $mean) {
