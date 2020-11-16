@@ -251,6 +251,7 @@
                 $cdq2 = $qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Driver->familyName;
                 if( (converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Q1) == NULL)
                     or (converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Q1) == NULL)){
+                    array_push($timeDelta2, null);
                     continue;
                 }
                 $q1d1 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Q1);
@@ -425,6 +426,9 @@
                 $diff = remove_outliers($diff, 3);
 
                 array_push($allRaces, calculate_mean($diff));
+            }
+            else{
+                array_push($allRaces, null);   
             }
         }
 
