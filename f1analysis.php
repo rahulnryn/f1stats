@@ -50,6 +50,13 @@
         }
         return $dataset;
       }
+     function getDev($dataset, $magnitude = 1) {
+        
+        $count = count($dataset);
+        $deviation = sqrt(array_sum(array_map("sd_square", $dataset, array_fill(0, $count, $mean))) / $count) * $magnitude; // Calculate standard deviation and times by magnitude
+        
+        return $deviation;
+      }
       
       function sd_square($x, $mean) {
         return pow($x - $mean, 2);
@@ -426,9 +433,18 @@
                 //echo("\n");
                 //echo(calculate_median($diff) . "\n");
                 $diff = remove_outliers($diff, 3);
-
-                array_push($allRaces, calculate_mean($diff));
-                array_push($actualRaceTime,calculate_mean($diff));   
+                if(is_infinite(calculate_mean($diff))){
+                    if($mean >= 0){
+                        array_push($allRaces, $mean + getDev($allRaces));
+                    }
+                    else{
+                        array_push($allRaces, $mean - getDev($allRaces));
+                    }
+                }
+                else{
+                    array_push($allRaces, calculate_mean($diff));
+                    array_push($actualRaceTime,calculate_mean($diff));   
+                }
 
             }
             else{
