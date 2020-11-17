@@ -1,6 +1,6 @@
 <?php
     error_reporting(0);
-    $actualRaceTime=array();
+    
     
 
     function calc_trend($X, $Y){
@@ -33,29 +33,12 @@
         return $mean;
     }
     function remove_outliers($dataset, $magnitude = 1) {
-        
+
         $count = count($dataset);
         $mean = array_sum($dataset) / $count; // Calculate the mean
         $deviation = sqrt(array_sum(array_map("sd_square", $dataset, array_fill(0, $count, $mean))) / $count) * $magnitude; // Calculate standard deviation and times by magnitude
-        for($i = 0; $i < count($dataset); $i++){
-            if($dataset[$i] <= $mean - $deviation){
-                array_push($allRaceData, 0);
-            }
-            else if($dataset[$i] >= $mean + $deviation){
-                array_push($allRaceData, 0);
-            }
-            else{
-                array_push($allRaceData, $dataset[$i]);
-            }
-        }
-        return $dataset;
-      }
-     function getDev($dataset, $magnitude = 1) {
-        
-        $count = count($dataset);
-        $deviation = sqrt(array_sum(array_map("sd_square", $dataset, array_fill(0, $count, $mean))) / $count) * $magnitude; // Calculate standard deviation and times by magnitude
-        
-        return $deviation;
+      
+        return array_filter($dataset, function($x) use ($mean, $deviation) { return ($x <= $mean + $deviation && $x >= $mean - $deviation); }); // Return filtered array of values that lie within $mean +- $deviation.
       }
       
       function sd_square($x, $mean) {
@@ -398,10 +381,12 @@
             $obj2 = json_decode($rjson2);
             $laps = $obj->MRData->total;
             $laps2 = $obj2->MRData->total;
-      
+            if($laps == 0 || $laps2 == 0){
+                $laps = 100;
+            }
             $first = array();
             $second = array();
-            for($i = 0; $i < min($laps, $laps2); $i++){
+            for($i = 1; $i < min($laps, $laps2); $i++){
                 if($obj->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time == 0){
                     break;
                 }
@@ -413,7 +398,7 @@
                 array_push($first, $dt1);
                 array_push($second, $dt2);
             }
-            if($getRacePositions1[$t] != "RET (Non-driver/mechanical)" && $getRacePositions2[$t] != "RET (Non-driver/mechanical)") {
+            if(abs($laps-$laps2) <= 1){
             
                 sort($first);
                 sort($second);
@@ -431,23 +416,8 @@
                 //echo("\n");
                 //echo(calculate_median($diff) . "\n");
                 $diff = remove_outliers($diff, 3);
-                $sumdiff = calculate_mean($allRaces);
-                if($length < 2){
-                    if($laps <= 3){
-                        array_push($allRaces, number_format($sumdiff - getDev($allRaces), 3));
-                    }
-                    else{
-                        array_push($allRaces, number_format($sumdiff + getDev($allRaces), 3));
-                    }
-                }
-                else{
-                    array_push($allRaces, calculate_mean($diff));
-                    array_push($actualRaceTime,calculate_mean($diff));   
-                }
 
-            }
-            else{
-                array_push($actualRaceTime, 0.0);   
+                array_push($allRaces, calculate_mean($diff));
             }
         }
 
@@ -633,21 +603,21 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
   <script language="JavaScript"><!--
     var data1 = {
-            labels: <?php echo json_encode($rounds); ?>,
-
-            datasets: [
-                {
-                    label: "Median % GAP in Races",
-                    strokeColor: "blue",
-                    fillColor: "rgba(220,220,220,1)",
-                    pointColor: "black",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "white",
-                    pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: <?php  echo json_encode($timeDelta2); ?>
-                }
+      data: [
+          {        
+            type: "line",
+            dataPoints: [
+                {<?php  for($i = 0; $i < count($rounds); $i++) echo "{ x: " . json_encode($rounds[$i]) .  ", y: " . json_encode($timeDelta[$i]) . "},"; ?>}
             ]
-        
+          },
+          {        
+            type: "line",
+            dataPoints: [
+                    {<?php  for($i = 0; $i < count($rounds); $i++) echo "{ x: " . json_encode($rounds[$i]) .  ", y: " . json_encode($qualTrend[$i]) . "},"; ?>}
+            ]
+          }
+      ]
+  
     };
     var options = {
         responsive: true,
@@ -667,6 +637,16 @@
                     pointHighlightFill: "white",
                     pointHighlightStroke: "rgba(220,220,220,1)",
                     data: <?php  echo json_encode($allRaces); ?>
+                },
+                {
+                    type: "line",
+                    axisYType: "secondary",
+                    strokeColor: "red",
+                    fillColor: "transparent",
+                    lineThickness: 1,
+                    showInLegend: true,
+                    markerSize: 0,
+                    data: <?php  echo json_encode($raceTrend); ?>
                 }
             ]
         
