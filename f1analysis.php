@@ -398,9 +398,7 @@
             $obj2 = json_decode($rjson2);
             $laps = $obj->MRData->total;
             $laps2 = $obj2->MRData->total;
-            if($laps == 0 || $laps2 == 0){
-                $laps = 100;
-            }
+      
             $first = array();
             $second = array();
             for($i = 1; $i < min($laps, $laps2); $i++){
