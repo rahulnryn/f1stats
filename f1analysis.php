@@ -839,7 +839,7 @@
     
     </div>
     <div class = "Footer1">
-        <table class = "racestimes">
+        <table class = "racedata">
         <tr>
             <th> Race Number </th>
 
