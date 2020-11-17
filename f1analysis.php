@@ -398,24 +398,34 @@
                 array_push($first, $dt1);
                 array_push($second, $dt2);
             }
+            $allTimes = array();
+            $allTimes2 = array();
+
             if(abs($laps-$laps2) <= 1){
             
                 sort($first);
                 sort($second);
                 $length = (int)(0.75 * min(count($first), count($second)));
                 $diff = array();
-
+                $meantime1=0;
+                $meantime2=0;
                 for($i = 0; $i < $length; $i++){
                     //echo("\n");
                     //echo($first[$i] . "\n");
                     //echo($second[$i] . "\n");
+                    $meantime1 += $first[$i];
+                    $meantime2 += $second[$i];
                     $delta = number_format((double)computeDiff($first[$i], $second[$i]), 3);
                     array_push($diff, $delta);
                     //echo($delta);
                 }
+                $meantime1 = $meantime1 / count($meantime1);
+                $meantime2 = $meantime2 / count($meantime2);
                 //echo("\n");
                 //echo(calculate_median($diff) . "\n");
                 $diff = remove_outliers($diff, 3);
+                array_push($allTimes, $meantime1);
+                array_push($allTimes2, $meantime2);
 
                 array_push($allRaces, calculate_mean($diff));
             }
@@ -825,6 +835,40 @@
                     ?>
 
             </tr>
+    </table>
+    <table class = "racestimes">
+        <tr>
+            <th> Race Number </th>
+
+            <th> <?php echo $drivername1 ?> </th>
+            <th> <?php echo $drivername2 ?> </th>
+            </tr>
+            <?php 
+                $i=1;
+                while($i <= $countRaces){
+                    echo "<tr>";
+                    echo "<td>" . $i . "</td>";
+
+                    if($allTimes[$i-1] < $allTime2[$i-1] && ($getRacePositions1[$i-1] >= "1" and $getRacePositions1[$i-1] <="25") && ($getRacePositions2[$i-1] >= "1" and $getRacePositions2[$i-1] <="25")){
+                        echo '<td class="underl">' . $allTimes[$i-1] . "</td>";
+                    }
+                    else{
+                        echo '<td>' . $allTimes2[$i-1] . "</td>";
+                    }
+
+
+                    if($allTimes2[$i-1] < $allTimes[$i-1] && ($getRacePositions1[$i-1] >= "1" and $getRacePositions1[$i-1] <="25") && ($getRacePositions2[$i-1] >= "1" and $getRacePositions2[$i-1] <="25")){
+                        echo '<td class="underl">' . $allTimes2[$i-1] . "</td>";
+                    }
+                    else{
+                        echo "<td>" . $allTimes[$i-1] . "</td>";
+                    }
+
+                    echo "</tr>";
+                    $i++;
+                }
+             ?>
+      
     </table>
     </div>
     <div class = "Footer1">
