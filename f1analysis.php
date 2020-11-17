@@ -603,20 +603,20 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
   <script language="JavaScript"><!--
     var data1 = {
-      data: [
-          {        
-            type: "line",
-            dataPoints: [
-                {<?php  for($i = 0; $i < count($rounds); $i++) echo "{ x: " . json_encode($rounds[$i]) .  ", y: " . json_encode($timeDelta[$i]) . "},"; ?>}
+      labels: <?php echo json_encode($rounds); ?>,
+
+            datasets: [
+                {
+                    label: "Median % GAP in Qualifying",
+                    strokeColor: "blue",
+                    fillColor: "rgba(220,220,220,1)",
+                    pointColor: "black",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "white",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: <?php  echo json_encode($timeDelta2); ?>
+                }
             ]
-          },
-          {        
-            type: "line",
-            dataPoints: [
-                    {<?php  for($i = 0; $i < count($rounds); $i++) echo "{ x: " . json_encode($rounds[$i]) .  ", y: " . json_encode($qualTrend[$i]) . "},"; ?>}
-            ]
-          }
-      ]
   
     };
     var options = {
@@ -637,16 +637,6 @@
                     pointHighlightFill: "white",
                     pointHighlightStroke: "rgba(220,220,220,1)",
                     data: <?php  echo json_encode($allRaces); ?>
-                },
-                {
-                    type: "line",
-                    axisYType: "secondary",
-                    strokeColor: "red",
-                    fillColor: "transparent",
-                    lineThickness: 1,
-                    showInLegend: true,
-                    markerSize: 0,
-                    data: <?php  echo json_encode($raceTrend); ?>
                 }
             ]
         
