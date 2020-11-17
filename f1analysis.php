@@ -415,7 +415,7 @@
                 array_push($first, $dt1);
                 array_push($second, $dt2);
             }
-            if($getRacePositions1[$t] != "RET (Non-driver/mechanical" || $getRacePositions2[$t] != "RET (Non-driver/mechanical") {
+            if($getRacePositions1[$t] != "RET (Non-driver/mechanical" && $getRacePositions2[$t] != "RET (Non-driver/mechanical") {
             
                 sort($first);
                 sort($second);
