@@ -433,12 +433,13 @@
                 //echo("\n");
                 //echo(calculate_median($diff) . "\n");
                 $diff = remove_outliers($diff, 3);
+                $sumdiff = calculate_mean($diff);
                 if(is_infinite(calculate_mean($diff))){
-                    if($mean >= 0){
-                        array_push($allRaces, $mean + getDev($allRaces));
+                    if($sumdiff >= 0){
+                        array_push($allRaces, $sumdiff + getDev($allRaces));
                     }
                     else{
-                        array_push($allRaces, $mean - getDev($allRaces));
+                        array_push($allRaces, $sumdiff - getDev($allRaces));
                     }
                 }
                 else{
