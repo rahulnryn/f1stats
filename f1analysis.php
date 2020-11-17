@@ -433,11 +433,11 @@
                 $diff = remove_outliers($diff, 3);
                 $sumdiff = calculate_mean($allRaces);
                 if($length < 1){
-                    if(min($laps, $laps2) < 1){
-                        array_push($allRaces, $sumdiff + getDev($allRaces));
+                    if($laps <= 1){
+                        array_push($allRaces, number_format($sumdiff + getDev($allRaces), 3));
                     }
                     else{
-                        array_push($allRaces, $sumdiff - getDev($allRaces));
+                        array_push($allRaces, number_format($sumdiff - getDev($allRaces), 3));
                     }
                 }
                 else{
