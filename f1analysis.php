@@ -1,6 +1,6 @@
 <?php
     error_reporting(0);
-    
+    $actualRaceTime=array();
     
 
     function calc_trend($X, $Y){
@@ -33,16 +33,19 @@
         return $mean;
     }
     function remove_outliers($dataset, $magnitude = 1) {
-
+        
         $count = count($dataset);
         $mean = array_sum($dataset) / $count; // Calculate the mean
         $deviation = sqrt(array_sum(array_map("sd_square", $dataset, array_fill(0, $count, $mean))) / $count) * $magnitude; // Calculate standard deviation and times by magnitude
         for($i = 0; $i < count($dataset); $i++){
             if($dataset[$i] <= $mean - $deviation){
-                $dataset[$i] = null;
+                array_push($allRaceData, 0);
             }
-            if($dataset[$i] >= $mean + $deviation){
-                $dataset[$i] = null;  
+            else if($dataset[$i] >= $mean + $deviation){
+                array_push($allRaceData, 0);
+            }
+            else{
+                array_push($allRaceData, $dataset[$i]);
             }
         }
         return $dataset;
@@ -251,7 +254,6 @@
                 $cdq2 = $qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Driver->familyName;
                 if( (converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Q1) == NULL)
                     or (converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Q1) == NULL)){
-                    array_push($timeDelta2, null);
                     continue;
                 }
                 $q1d1 = converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Q1);
@@ -406,7 +408,7 @@
                 array_push($first, $dt1);
                 array_push($second, $dt2);
             }
-            if(abs($laps-$laps2) <= 1){
+            if($getRacePositions1[$t] != "RET (Non-driver/mechanical" || $getRacePositions2[$t] != "RET (Non-driver/mechanical") {
             
                 sort($first);
                 sort($second);
@@ -426,9 +428,11 @@
                 $diff = remove_outliers($diff, 3);
 
                 array_push($allRaces, calculate_mean($diff));
+                array_push($actualRaceTime,calculate_mean($diff));   
+
             }
             else{
-                array_push($allRaces, null);   
+                array_push($actualRaceTime, 0.0);   
             }
         }
 
