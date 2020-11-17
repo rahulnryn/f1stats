@@ -401,7 +401,7 @@
       
             $first = array();
             $second = array();
-            for($i = 1; $i < min($laps, $laps2); $i++){
+            for($i = 0; $i < min($laps, $laps2); $i++){
                 if($obj->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time == 0){
                     break;
                 }
@@ -432,8 +432,8 @@
                 //echo(calculate_median($diff) . "\n");
                 $diff = remove_outliers($diff, 3);
                 $sumdiff = calculate_mean($allRaces);
-                if($length < 1){
-                    if($laps <= 1){
+                if($length < 2){
+                    if($laps <= 3){
                         array_push($allRaces, number_format($sumdiff - getDev($allRaces), 3));
                     }
                     else{
