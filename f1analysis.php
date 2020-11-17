@@ -836,7 +836,10 @@
 
             </tr>
     </table>
-    <table class = "racestimes">
+    
+    </div>
+    <div class = "Footer1">
+        <table class = "racestimes">
         <tr>
             <th> Race Number </th>
 
@@ -870,9 +873,6 @@
              ?>
       
     </table>
-    </div>
-    <div class = "Footer1">
-        
         <h3> <a href = "index.php"> <h3> Try Another Comparison </h3> </a> </h3> 
     </div>
 </body>
