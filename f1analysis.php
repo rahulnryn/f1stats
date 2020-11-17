@@ -433,9 +433,9 @@
                 //echo("\n");
                 //echo(calculate_median($diff) . "\n");
                 $diff = remove_outliers($diff, 3);
-                $sumdiff = calculate_mean($diff);
-                if(is_infinite(calculate_mean($diff))){
-                    if($sumdiff >= 0){
+                $sumdiff = calculate_mean($allRaces);
+                if($length < 1){
+                    if(min($laps, $laps2) < 1){
                         array_push($allRaces, $sumdiff + getDev($allRaces));
                     }
                     else{
