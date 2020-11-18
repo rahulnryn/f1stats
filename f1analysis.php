@@ -983,7 +983,7 @@
     <table class = "racedata2">
       
         <tr>
-            <th> Race Number (AVG Lap of Top 75% Laps) </th>
+            <th> Race Number (AVG Lap of Top 75% Laps, without outliers) </th>
 
             <th> <?php echo $drivername1 ?> </th>
             <th> <?php echo $drivername2 ?> </th>
