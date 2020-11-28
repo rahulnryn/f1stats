@@ -438,7 +438,7 @@
     $allTimes = array();
     $allTimes2 = array();
   
-    if(!file_exists($getYears . $getTeams . '.txt2')){
+    if(!file_exists($getYears . $getTeams . '.txt')){
         for($t = 1; $t <= $ender; $t++){
             sleep(0.5);
             $rjson = file_get_contents('https://ergast.com/api/f1/' . $getYears . '/' . $t . '/' . 'drivers/' . $dId1 . '/laps.json?limit=100');
