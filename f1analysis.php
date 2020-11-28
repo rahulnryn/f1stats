@@ -488,8 +488,8 @@
 
             if(abs($laps-$laps2) <= 1 and $t >= $starter){
             
-                $first = remove_outliers2($first, 3);
-                $second = remove_outliers2($second, 3);
+                $first = remove_outliers2($first, 2);
+                $second = remove_outliers2($second, 2);
 
                 sort($first);
                 sort($second);
