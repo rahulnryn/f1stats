@@ -438,7 +438,7 @@
     $allTimes = array();
     $allTimes2 = array();
   
-    if(!file_exists($getYears . $getTeams . '.txt')){
+    if(!file_exists($getYears . $getTeams . '.txt2')){
         for($t = 1; $t <= $ender; $t++){
             sleep(0.5);
             $rjson = file_get_contents('https://ergast.com/api/f1/' . $getYears . '/' . $t . '/' . 'drivers/' . $dId1 . '/laps.json?limit=100');
@@ -473,12 +473,12 @@
                 $dev1 = Stand_Deviation($first);
                 $dev2 = Stand_Deviation($second);
                 
-                if($dt1 <= ($cm1 + 3 * $dev1)){
+                if($dt1 <= ($cm1 + 2 * $dev1)){
                    
                     array_push($first, $dt1);
                 }
 
-                if($dt2 <= ($cm2 + 3 * $dev2)){
+                if($dt2 <= ($cm2 + 2 * $dev2)){
                     
                     array_push($second, $dt2);
                 }
@@ -488,15 +488,15 @@
 
             if(abs($laps-$laps2) <= 1 and $t >= $starter){
             
-                $first = remove_outliers2($first, 2);
-                $second = remove_outliers2($second, 2);
+                $first = remove_outliers2($first, 1);
+                $second = remove_outliers2($second, 1);
 
                 sort($first);
                 sort($second);
               
 
-                $length1 = (int)(1 * count($first));
-                $length2 = (int)(1 * count($second));
+                $length1 = (int)(count($first));
+                $length2 = (int)(count($second));
 
                 $diff = array();
                 $meantime1=0;
@@ -892,7 +892,7 @@
 
         <?php
 
-            echo '<p class ="xaxisfont"> Y-Axis: AVG Race Laptime Gap: Start/finish laptimes and laptimes set 3 SDs slower than the moving average are removed. (' . $drivername1 . " to " . $drivername2  . ")</p> ";
+            echo '<p class ="xaxisfont"> Y-Axis: AVG Race Laptime Gap: Start/finish laptimes and laptimes set 2 SDs slower than the moving average are removed. (' . $drivername1 . " to " . $drivername2  . ")</p> ";
 
         ?>
         <p class ="xaxisfont"> X-Axis: Session Number (ONLY races both drivers finished are included.) </p>
