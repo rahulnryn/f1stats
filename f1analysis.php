@@ -22,7 +22,24 @@
         }
         return $Yfit;
     }
-
+    function Stand_Deviation($arr) 
+    { 
+        $num_of_elements = count($arr); 
+          
+        $variance = 0.0; 
+          
+                // calculating mean using array_sum() method 
+        $average = array_sum($arr)/$num_of_elements; 
+          
+        foreach($arr as $i) 
+        { 
+            // sum of squares of differences between  
+                        // all numbers and means. 
+            $variance += pow(($i - $average), 2); 
+        } 
+          
+        return (float)sqrt($variance/$num_of_elements); 
+    } 
 
     function contains($haystack, $needle)
     {
@@ -40,6 +57,15 @@
       
         return array_filter($dataset, function($x) use ($mean, $deviation) { return ($x <= $mean + $deviation && $x >= $mean - $deviation); }); // Return filtered array of values that lie within $mean +- $deviation.
       }
+
+      function remove_outliers2($dataset, $magnitude = 1) {
+
+        $count = count($dataset);
+        $mean = array_sum($dataset) / $count; // Calculate the mean
+        $deviation = sqrt(array_sum(array_map("sd_square", $dataset, array_fill(0, $count, $mean))) / $count) * $magnitude; // Calculate standard deviation and times by magnitude
+      
+        return array_filter($dataset, function($x) use ($mean, $deviation) { return ($x <= $mean + $deviation); }); // Return filtered array of values that lie within $mean +- $deviation.
+      }
       
       function sd_square($x, $mean) {
         return pow($x - $mean, 2);
@@ -49,6 +75,14 @@
         $str1 = $timestr[2] . $timestr[3];
         $seconds = (double)($str1);
         $str2 = $timestr[5] . $timestr[6] . $timestr[7];
+        $milliseconds = (double)$str2/1000.0;
+        return $minutes + $seconds + $milliseconds;
+    }
+    function converToSeconds2($timestr){
+        $minutes = ((double)$timestr[1]) * 60;
+        $str1 = $timestr[3] . $timestr[4];
+        $seconds = (double)($str1);
+        $str2 = $timestr[6] . $timestr[7] . $timestr[8];
         $milliseconds = (double)$str2/1000.0;
         return $minutes + $seconds + $milliseconds;
     }
@@ -299,7 +333,7 @@
                 
                 $driver1time = $d1Further1;
                 $driver2time = $d2Further1;
-                
+             
                 
                 if($q1pos < $q2pos  and ($cdq2 == $drivername2 || $cdq2 == $drivername1)){
                     $countQualiWins[$cdq1]++;
@@ -348,8 +382,7 @@
 
             
         }
-        if(count($timeDelta2) >= count($rounds)/2)
-            $qualTrend = calc_trend($rounds, $timeDelta2);
+   
         $qualinames = array_keys($countQualiWins);
         $qualiscores = array_values($countQualiWins);
     }
@@ -404,8 +437,9 @@
     sleep(0.3);
     $allTimes = array();
     $allTimes2 = array();
+  
     if(!file_exists($getYears . $getTeams . '.txt')){
-        for($t = $starter; $t <= $ender; $t++){
+        for($t = 1; $t <= $ender; $t++){
             sleep(0.5);
             $rjson = file_get_contents('https://ergast.com/api/f1/' . $getYears . '/' . $t . '/' . 'drivers/' . $dId1 . '/laps.json?limit=100');
             $rjson2 = file_get_contents('https://ergast.com/api/f1/' . $getYears . '/' . $t . '/' . 'drivers/' . $dId2 . '/laps.json?limit=100');
@@ -414,12 +448,14 @@
             $obj2 = json_decode($rjson2);
             $laps = $obj->MRData->total;
             $laps2 = $obj2->MRData->total;
+            $laps--;
+            $laps2--;
             if($laps <= 1 || $laps2 <= 1){
                 $laps = 100;
             }
             $first = array();
             $second = array();
-            for($i = 1; $i < min($laps, $laps2); $i++){
+            for($i = 2; $i < min($laps, $laps2); $i++){
                 if($obj->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time == 0){
                     break;
                 }
@@ -428,41 +464,68 @@
                 }
                 $dt1 = converToSeconds($obj->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time);
                 $dt2 = converToSeconds($obj2->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time);
-                array_push($first, $dt1);
-                array_push($second, $dt2);
+                $cm1 = calculate_mean($first);
+                $cm2 = calculate_mean($second);
+                if($i == 2){
+                    array_push($first, $dt1);
+                    array_push($second, $dt2);
+                }
+                $dev1 = Stand_Deviation($first);
+                $dev2 = Stand_Deviation($second);
+                
+                if($dt1 <= ($cm1 + 3 * $dev1)){
+                   
+                    array_push($first, $dt1);
+                }
+
+                if($dt2 <= ($cm2 + 3 * $dev2)){
+                    
+                    array_push($second, $dt2);
+                }
+
             }
          
 
-            if(abs($laps-$laps2) <= 1){
-                $first = remove_outliers($first, 3);
-                $second = remove_outliers($second, 3);
+            if(abs($laps-$laps2) <= 1 and $t >= $starter){
+            
+                $first = remove_outliers2($first, 3);
+                $second = remove_outliers2($second, 3);
 
                 sort($first);
                 sort($second);
-                $length = (int)(0.75 * min(count($first), count($second)));
+              
+
+                $length1 = (int)(1 * count($first));
+                $length2 = (int)(1 * count($second));
+
                 $diff = array();
                 $meantime1=0;
                 $meantime2=0;
-                for($i = 0; $i < $length; $i++){
+                echo($length . "\n");
+                for($i = 0; $i < $length1; $i++){
                     //echo("\n");
                     //echo($first[$i] . "\n");
                     //echo($second[$i] . "\n");
                     $meantime1 += $first[$i];
-                    $meantime2 += $second[$i];
-                    $delta = number_format((double)computeDiff($first[$i], $second[$i]), 3);
-                    array_push($diff, $delta);
                     //echo($delta);
                 }
-                array_push($allRaces, number_format(computeDiff($meantime1/$length, $meantime2/$length), 3));
+                for($i = 0; $i < $length2; $i++){
+                    //echo("\n");
+                    //echo($first[$i] . "\n");
+                    //echo($second[$i] . "\n");
+                    $meantime2 += $second[$i];
+                    //echo($delta);
+                }
+                
+                array_push($allRaces, number_format(computeDiff($meantime1/$length1, $meantime2/$length2), 3));
 
-                $meantime1 = convertToMinutes(number_format($meantime1 / $length, 3));
-                $meantime2 = convertToMinutes(number_format($meantime2 / $length, 3));
+                $meantime1 = convertToMinutes(number_format($meantime1 / $length1, 3));
+                $meantime2 = convertToMinutes(number_format($meantime2 / $length2, 3));
                 //echo(($meantime1) . "\n");
                 //echo("\n");
                 //echo(calculate_median($diff) . "\n");
                 array_push($allTimes, $meantime1);
                 array_push($allTimes2, $meantime2);
-                $diff = remove_outliers($diff, 3);
 
             }
             else{
@@ -471,6 +534,7 @@
 
             }
         }
+        $allRaces = remove_outliers($allRaces, 3);
 
         $medGap = (number_format(calculate_median($allRaces), 3));
         $current = "";
@@ -531,8 +595,6 @@
         }
         $medGap = (number_format(calculate_median($allRaces), 3));
     }
-    if(count($allRaces) >= count($rounds)/2)
-        $raceTrend = calc_trend($rounds, $allRaces);
 ?>
 
 
@@ -555,15 +617,25 @@
         .Footer1{
             position: absolute;
             font-size: 100%;
-
             bottom: -170%;
             left: 0%;
+
+        }
+        .Footer2{
+            position: absolute;
+            font-size: 65%;
+            text-decoration: underline;
+            bottom: -140%;
+            left: 1%;
 
         }
         h3{
             color: #4682b4
         }
-        
+        .graph1 p{
+            top: 100%;
+            font-size: 50%;
+        }
         .box123{
             position: absolute;
             font-size: 40%;
@@ -616,6 +688,10 @@
             color: black;
             background-color:"#ff6361";
      
+        }
+        .racedata2 p{
+            font-size: 20%;
+            font-family: "Georgia" ;
         }
         .racedata2 th{
             font-size: 100%;
@@ -744,7 +820,9 @@
             border-left: 0.1rem solid grey;
             border-bottom: 0.1rem solid grey;
         }
-   
+        .tt{
+           top: 20%;
+        }
        
   </style>
 
@@ -814,7 +892,7 @@
 
         <?php
 
-            echo '<p class ="xaxisfont"> Y-Axis: Average % Gap of fastest 75% of race laps without outliers to Teammate (' . $drivername1 . " to " . $drivername2  . ")</p> ";
+            echo '<p class ="xaxisfont"> Y-Axis: AVG Race Laptime Gap: Start/finish laptimes and laptimes set 3 SDs slower than the moving average are removed. (' . $drivername1 . " to " . $drivername2  . ")</p> ";
 
         ?>
         <p class ="xaxisfont"> X-Axis: Session Number (ONLY races both drivers finished are included.) </p>
@@ -828,6 +906,7 @@
 
             <th> <?php echo $drivername1 ?> </th>
             <th> <?php echo $drivername2 ?> </th>
+
             </tr>
             <?php 
                 $i=1;
@@ -883,7 +962,8 @@
                 </tr>
                 <tr>
                     <td> Median Qualifying % gap (fastest lap in final session) </td>
-                    <?php if(number_format(calculate_median($timeDelta2), 3) > 0){
+                    <?php 
+                        if(number_format(calculate_median($timeDelta2), 3) > 0){
                             echo '<td>' . number_format(calculate_median($timeDelta2), 3) . "%" . "</td>";
                             echo '<td class="underl"> ' . -1 * number_format(calculate_median($timeDelta2), 3) . "%". "</td>";
                         }
@@ -959,17 +1039,24 @@
                 ?> 
             </tr>
             <tr>
-                    <td> Race Lap Time % Gap (over the season) </td>
+                    <td> AVG Race Lap Time % Gap (over the season) </td>
                     
-                    <?php if($medGap > 0){
+                    <?php 
+                      
+
+                        if($medGap > 0){
                             echo '<td>' . $medGap . "%" . "</td>";
                             echo '<td class="underl"> ' . -1 * $medGap . "%". "</td>";
                         }
-                        else{
-                            echo '<td class="underl"> ' . $medGap . "%". "</td>";
-                            echo '<td>' . -1 * $medGap . "%" . "</td>";
-
+                        else if($medGap < 0){
+                            echo '<td class = "underl">' . $medGap . "%" . "</td>";
+                            echo '<td>' . -1 * $medGap . "%". "</td>";
                         }
+                        if($medGap == 0){
+                            echo '<td>' . $medGap . "</td>";
+                            echo '<td> ' . $medGap . "</td>";
+                        }
+                     
                     ?>
 
             </tr>
@@ -980,41 +1067,54 @@
         
         <h3> <a href = "index.php"> <h3> Try Another Comparison </h3> </a> </h3> 
     </div>
-    <table class = "racedata2">
-      
-        <tr>
-            <th> Race Number (AVG Lap of Top 75% Laps, without outliers) </th>
+ 
+    <div class = "graph1">
+   
+        <table class = "racedata2">
+        
 
-            <th> <?php echo $drivername1 ?> </th>
-            <th> <?php echo $drivername2 ?> </th>
+            <tr>
 
-            </tr>
-           
-            <?php 
-                $i=0;
-                while($i < $countRaces){
-                    echo "<tr>";
-                    echo "<td>" . (int)($i+1) . "</td>";
-                        if($allTimes[$i] != "Not Available" && $allTimes[$i] != null){
-                            if($allTimes[$i] <= $allTimes2[$i]){
-                                echo '<td class="underl">' . $allTimes[$i] . "</td>";
-                                echo '<td>' . $allTimes2[$i] . "</td>";
+                <th> Race Number (AVG Laptime) </th>
+
+                <th> <?php echo $drivername1 ?> </th>
+                <th> <?php echo $drivername2 ?> </th>
+                <th> <?php echo "% Diff" ?> </th>
+        
+                </tr>
+            
+                <?php 
+                    $i=0;
+                    while($i < $countRaces){
+                        echo "<tr>";
+                        echo "<td>" . (int)($i+1) . "</td>";
+                            if($allTimes[$i] != "Not Available" && $allTimes[$i] != null){
+                                if($allTimes[$i] <= $allTimes2[$i]){
+                                    echo '<td class="underl">' . $allTimes[$i] . "</td>";
+                                    echo '<td>' . $allTimes2[$i] . "</td>";
+                                    echo '<td>' . number_format(computeDiff(converToSeconds2($allTimes[$i]), converToSeconds2($allTimes2[$i])), 3)  . '</td>';
+                                }
+                                else{
+                                    echo '<td>' . $allTimes[$i] . "</td>";
+                                    echo '<td class="underl">' . $allTimes2[$i] . "</td>";
+                                    echo '<td>' . number_format(computeDiff(converToSeconds2($allTimes[$i]), converToSeconds2($allTimes2[$i])), 3)  . '</td>';
+
+                                }
                             }
                             else{
-                                echo '<td>' . $allTimes[$i] . "</td>";
-                                echo '<td class="underl">' . $allTimes2[$i] . "</td>";
-                            }
-                        }
-                        else{
-                            echo '<td>' .  $allTimes[$i] . "</td>";
-                            echo '<td>' .  $allTimes[$i] . "</td>";
-                        }
-                    echo "</tr>";
-                    $i++;
-                }
-             ?>
+                                echo '<td>' .  $allTimes[$i] . "</td>";
+                                echo '<td>' .  $allTimes[$i] . "</td>";
 
-    </table>
+                            }
+                        echo "</tr>";
+                        $i++;
+                    }
+                ?>
+
+        </table>
+       
+
+    </div>
     <div class = "def">
 
 
@@ -1026,6 +1126,7 @@
 
                 <th> <?php echo $drivername1 ?> </th>
                 <th> <?php echo $drivername2 ?> </th>
+                <th> <?php echo "% Diff" ?> </th>
 
                 </tr>
             
@@ -1038,15 +1139,19 @@
                                 if($allQual1[$i] <= $allQual2[$i]){
                                     echo '<td class="underl">' . convertToMinutes($allQual1[$i]) . "</td>";
                                     echo '<td>' . convertToMinutes($allQual2[$i]) . "</td>";
+                                    echo '<td>' . number_format(computeDiff($allQual1[$i], $allQual2[$i]), 3) . '</td>';
+
                                 }
                                 else{
                                     echo '<td>' . convertToMinutes($allQual1[$i]) . "</td>";
                                     echo '<td class="underl">' . convertToMinutes($allQual2[$i]) . "</td>";
+                                    echo '<td>' . number_format(computeDiff($allQual1[$i], $allQual2[$i]), 3)  . '</td>';
                                 }
                             }
                             else{
                                 echo '<td>' .  ($allQual1[$i]) . "</td>";
-                                echo '<td>' .  ($allQual2[$i]) . "</td>";
+                                echo '<td>' .  ($allQual2[$i]) .  "</td>";
+
                             }
                         echo "</tr>";
                         $i++;
