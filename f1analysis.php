@@ -471,9 +471,14 @@
                 array_push($alap2, $dt2);
 
             }
+            $cm1 = 0.0;
+            $cm2 = 0.0;
+            $xit = 0;
+            $yit = 0;
             $avg1 = calculate_median($alap1);
             $avg2 = calculate_median($alap2);
-
+            $dev1 = Stand_Deviation($alap1);
+            $dev2 = Stand_Deviation($alap2);
             for($i = 2; $i < min($laps, $laps2); $i++){
                 if($obj->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time == 0){
                     break;
@@ -483,24 +488,18 @@
                 }
                 $dt1 = converToSeconds($obj->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time);
                 $dt2 = converToSeconds($obj2->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time);
-                $cm1 = calculate_mean($first);
-                $cm2 = calculate_mean($second);
-                if($i == 2){
-                    array_push($first, $avg1);
-                    array_push($second, $avg2);
-                }
-                $dev1 = Stand_Deviation($first);
-                $dev2 = Stand_Deviation($second);
                 
-                if($dt1 <= ($cm1 + 3 * $dev1)  and $dt1 <= (1.07 * $cm1)){
-                   
+             
+                
+                if($dt1 <= 3*$dev1+$avg1 and $dt1 <= 1.07 * $avg1){
                     array_push($first, $dt1);
-                }
 
-                if($dt2 <= ($cm2 + 3 * $dev2) and $dt2 <= (1.07 * $cm2)){
-                    
-                    array_push($second, $dt2);
                 }
+                if($dt2 <= 3*$dev2+$avg2 and $dt2 <= 1.07 * $avg2){
+                    array_push($second, $dt2);
+
+                }
+            
 
             }
 
@@ -909,11 +908,11 @@
 
         <?php
 
-            echo '<p class ="xaxisfont"> Y-Axis: AVG Race Laptime Gap: Start/finish laptimes and laptimes set 3 SDs (or 7%) slower than the moving average are not included, base time is the median lap. (' . $drivername1 . " to " . $drivername2  . ")</p> ";
+            echo '<p class ="xaxisfont"> Y-Axis: AVG Race Laptime Gap: Start/finish laptimes and laptimes set 3 SDs (or 7%) slower than the median lap are not included in the average calculation. (' . $drivername1 . " to " . $drivername2  . ")</p> ";
 
         ?>
         <p class ="xaxisfont"> X-Axis: Session Number (ONLY races both drivers finished are included.) </p>
-
+        <p class = "xaxisfont"> <b> NOTE: After looking at all the data, this method looks like the most accurate so far. Unless I find a better method, I am going to keep this. </b> </p>
     </div>
 
    
