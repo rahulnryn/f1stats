@@ -455,6 +455,25 @@
             }
             $first = array();
             $second = array();
+            $alap1 = array();
+            $alap2 = array();
+
+            for($i = 1; $i < min($laps, $laps2); $i++){
+                if($obj->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time == 0){
+                    break;
+                }
+                if($obj2->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time == 0){
+                    break;
+                }
+                $dt1 = converToSeconds($obj->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time);
+                $dt2 = converToSeconds($obj2->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time);
+                array_push($alap1, $dt1);
+                array_push($alap2, $dt2);
+
+            }
+            $avg1 = calculate_median($alap1);
+            $avg2 = calculate_median($alap2);
+
             for($i = 2; $i < min($laps, $laps2); $i++){
                 if($obj->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time == 0){
                     break;
@@ -467,29 +486,28 @@
                 $cm1 = calculate_mean($first);
                 $cm2 = calculate_mean($second);
                 if($i == 2){
-                    array_push($first, $dt1);
-                    array_push($second, $dt2);
+                    array_push($first, $avg1);
+                    array_push($second, $avg2);
                 }
                 $dev1 = Stand_Deviation($first);
                 $dev2 = Stand_Deviation($second);
                 
-                if($dt1 <= ($cm1 + 2 * $dev1)){
+                if($dt1 <= ($cm1 + 3 * $dev1)){
                    
                     array_push($first, $dt1);
                 }
 
-                if($dt2 <= ($cm2 + 2 * $dev2)){
+                if($dt2 <= ($cm2 + 3 * $dev2)){
                     
                     array_push($second, $dt2);
                 }
 
             }
-         
 
             if(abs($laps-$laps2) <= 1 and $t >= $starter){
-            
-                $first = remove_outliers2($first, 1);
-                $second = remove_outliers2($second, 1);
+                unset($first[0]);
+                unset($second[0]);
+                
 
                 sort($first);
                 sort($second);
@@ -534,7 +552,7 @@
 
             }
         }
-        $allRaces = remove_outliers($allRaces, 3);
+        $allRaces = remove_outliers($allRaces, 4);
 
         $medGap = (number_format(calculate_median($allRaces), 3));
         $current = "";
@@ -892,7 +910,7 @@
 
         <?php
 
-            echo '<p class ="xaxisfont"> Y-Axis: AVG Race Laptime Gap: Start/finish laptimes and laptimes set 2 SDs slower than the moving average are removed. (' . $drivername1 . " to " . $drivername2  . ")</p> ";
+            echo '<p class ="xaxisfont"> Y-Axis: AVG Race Laptime Gap: Start/finish laptimes and laptimes set 3 SDs slower than the moving average are not includes, base time is the median lap. (' . $drivername1 . " to " . $drivername2  . ")</p> ";
 
         ?>
         <p class ="xaxisfont"> X-Axis: Session Number (ONLY races both drivers finished are included.) </p>
