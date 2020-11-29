@@ -492,12 +492,12 @@
                 $dev1 = Stand_Deviation($first);
                 $dev2 = Stand_Deviation($second);
                 
-                if($dt1 <= ($cm1 + 3 * $dev1)){
+                if($dt1 <= ($cm1 + 3 * $dev1)  and $dt1 <= (1.07 * $cm1)){
                    
                     array_push($first, $dt1);
                 }
 
-                if($dt2 <= ($cm2 + 3 * $dev2)){
+                if($dt2 <= ($cm2 + 3 * $dev2) and $dt2 <= (1.07 * $cm2)){
                     
                     array_push($second, $dt2);
                 }
@@ -505,8 +505,7 @@
             }
 
             if(abs($laps-$laps2) <= 1 and $t >= $starter){
-                unset($first[0]);
-                unset($second[0]);
+              
                 
 
                 sort($first);
@@ -910,7 +909,7 @@
 
         <?php
 
-            echo '<p class ="xaxisfont"> Y-Axis: AVG Race Laptime Gap: Start/finish laptimes and laptimes set 3 SDs slower than the moving average are not includes, base time is the median lap. (' . $drivername1 . " to " . $drivername2  . ")</p> ";
+            echo '<p class ="xaxisfont"> Y-Axis: AVG Race Laptime Gap: Start/finish laptimes and laptimes set 3 SDs (or 7%) slower than the moving average are not included, base time is the median lap. (' . $drivername1 . " to " . $drivername2  . ")</p> ";
 
         ?>
         <p class ="xaxisfont"> X-Axis: Session Number (ONLY races both drivers finished are included.) </p>
