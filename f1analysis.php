@@ -488,7 +488,7 @@
 
             }
 
-            if( min(count($first), count($second)) >= 25){
+            if( min(count($first), count($second)) >= 25 and $t >= $starter){
               
                 
 
