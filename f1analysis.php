@@ -908,7 +908,6 @@
             font-family: "Georgia";
         }
         .xaxisfont2{
-            text-decoration: underline;
 
             font-size: 200%;
             font-family: "Georgia";
@@ -1050,8 +1049,8 @@
     <div class ="box123">
 
         
-        <p class ="xaxisfont2"> <b> NOTE: The method that is used to compute average race lap difference over the season is to compute the average race lap times from the best 25%, best 50%, best 75% and best 90% laps for each race. A median % difference is then computed from all 4 of these datasets, the final result displayed is a range of these 4 values. </b> </p>
-        <p class ="xaxisfont2"> <b> NOTE2: This will be the last change made to the race pace calculations, this is a very simple way to produce a rough estimate of race pace difference. </b> </p>
+        <p class ="xaxisfont2"> <i> NOTE: The method that is used to compute average race lap difference over the season is to compute the average race lap times from the best 25%, best 50%, best 75% and best 90% laps for each race. A median % difference is then computed from all 4 of these datasets, the final result displayed is a range of these 4 values. </i> </p>
+        <p class ="xaxisfont2"> <i> NOTE2: This will be the last change made to the race pace calculations, this is a very simple way to produce a rough estimate of race pace difference. </i> </p>
 
     </div>
 
