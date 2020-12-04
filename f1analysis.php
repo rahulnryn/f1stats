@@ -666,6 +666,7 @@
                 $current8 .= ',';
             }
         }
+        
         for($i = 0; $i < count($firstVals); $i++){
             $current9 .= ($firstVals[$i]);
             if($i != count($firstVals) - 1){
@@ -690,7 +691,12 @@
                 $current12 .= ',';
             }
         }
-       
+       for($i = 0; $i < count($allRaces100_); $i++){
+            $current13 .= ($allRaces100_[$i]);
+            if($i != count($allRaces100_) - 1){
+                $current13 .= ',';
+            }
+        }
 
             $filename = $getYears . $getTeams . '.txt'; 
             $fp = fopen($filename,"w");  
@@ -749,6 +755,10 @@
             $fp = fopen($filename,"w");  
             fwrite($fp,$current12); 
             fclose($fp); 
+            $filename = $getYears . $getTeams . '12' . '.txt'; 
+            $fp = fopen($filename,"w");  
+            fwrite($fp,$current13); 
+            fclose($fp); 
         
     }
     else{
@@ -764,6 +774,7 @@
         $r10 = file_get_contents( $getYears . $getTeams . '9' . '.txt');
         $r11 = file_get_contents( $getYears . $getTeams . '10' . '.txt');
         $r12 = file_get_contents( $getYears . $getTeams . '11' . '.txt');
+        $r13 = file_get_contents( $getYears . $getTeams . '12' . '.txt');
 
 
         $allRaces = preg_split("/\,/", $r1);
@@ -779,15 +790,14 @@
         $xAxis = preg_split("/\,/", $r10);
         $allTimes = preg_split("/\,/", $r11);
         $allTimes2 = preg_split("/\,/", $r12);
+        $allRaces100_ = preg_split("/\,/", $r13);
 
 
 
-        $minRange = number_format(min(calculate_median($allRaces_), calculate_median($allRaces50_), calculate_median($allRaces75_),
-        calculate_median($allRaces95_)), 3);
+        $minRange = calculate_median($allRaces95_)), 3);
 
 
-        $maxRange = number_format(max(calculate_median($allRaces_), calculate_median($allRaces50_), calculate_median($allRaces75_),
-        calculate_median($allRaces95_)), 3);
+        $maxRange = calculate_median($allRaces95_)), 3);
 
     }
     $xAxis = array();
