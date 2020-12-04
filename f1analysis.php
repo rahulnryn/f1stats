@@ -399,7 +399,7 @@
     $allTimes2 = array();
     $firstVals = array();
 
-    if(!file_exists($getYears . $getTeams . 'txt')){
+    if(!file_exists($getYears . $getTeams . '.txt')){
         for($t = 1; $t <= $ender; $t++){
             sleep(0.5);
             $rjson = file_get_contents('https://ergast.com/api/f1/' . $getYears . '/' . $t . '/' . 'drivers/' . $dId1 . '/laps.json?limit=100');
@@ -409,8 +409,8 @@
             $obj2 = json_decode($rjson2);
             $laps = $obj->MRData->total;
             $laps2 = $obj2->MRData->total;
-            $laps;
-            $laps2;
+            $laps--;
+            $laps2--;
             if($laps <= 1 || $laps2 <= 1){
                 $laps = 100;
             }
@@ -669,74 +669,84 @@
                 $current9 .= ',';
             }
         }
-        for($i = 0; $i < count($firstVals); $i++){
+        for($i = 0; $i < count($xAxis); $i++){
             $current10 .= ($xAxis[$i]);
             if($i != count($xAxis) - 1){
                 $current10 .= ',';
             }
         }
+        for($i = 0; $i < count($allTimes); $i++){
+            $current11 .= ($allTimes[$i]);
+            if($i != count($allTimes) - 1){
+                $current11 .= ',';
+            }
+        }
+        for($i = 0; $i < count($allTimes2); $i++){
+            $current12 .= ($allTimes2[$i]);
+            if($i != count($allTimes2) - 1){
+                $current12 .= ',';
+            }
+        }
        
 
-        if(!file_exists($getYears . $getTeams . '.txt') && $getYears >= "1996" && $check ){
             $filename = $getYears . $getTeams . '.txt'; 
             $fp = fopen($filename,"w");  
             fwrite($fp,$current); 
             fclose($fp);  
-        }
-        if(!file_exists($getYears . $getTeams . '1' . '.txt') && $getYears >= "1996" && $check){
+        
             $filename = $getYears . $getTeams . '1' . '.txt'; 
             $fp = fopen($filename,"w");  
             fwrite($fp,$current2); 
             fclose($fp);  
-        }
-        if(!file_exists($getYears . $getTeams . '2' . '.txt') && $getYears >= "1996" && $check){
+        
             $filename = $getYears . $getTeams . '2' . '.txt'; 
             $fp = fopen($filename,"w");  
             fwrite($fp,$current3); 
             fclose($fp);  
-        }
-        if(!file_exists($getYears . $getTeams . '3' . '.txt') && $getYears >= "1996" && $check){
+        
             $filename = $getYears . $getTeams . '3' . '.txt'; 
             $fp = fopen($filename,"w");  
             fwrite($fp,$current4); 
             fclose($fp);  
-        }
-        if(!file_exists($getYears . $getTeams . '4' . '.txt') && $getYears >= "1996" && $check){
+        
             $filename = $getYears . $getTeams . '4' . '.txt'; 
             $fp = fopen($filename,"w");  
             fwrite($fp,$current5); 
             fclose($fp);  
-        }
-        if(!file_exists($getYears . $getTeams . '5' . '.txt') && $getYears >= "1996" && $check){
+        
             $filename = $getYears . $getTeams . '5' . '.txt'; 
             $fp = fopen($filename,"w");  
             fwrite($fp,$current6); 
             fclose($fp);  
-        }
-        if(!file_exists($getYears . $getTeams . '6' . '.txt') && $getYears >= "1996" && $check){
+        
             $filename = $getYears . $getTeams . '6' . '.txt'; 
             $fp = fopen($filename,"w");  
             fwrite($fp,$current7); 
             fclose($fp);  
-        }
-        if(!file_exists($getYears . $getTeams . '7' . '.txt') && $getYears >= "1996" && $check){
+        
             $filename = $getYears . $getTeams . '7' . '.txt'; 
             $fp = fopen($filename,"w");  
             fwrite($fp,$current8); 
             fclose($fp);  
-        }
-        if(!file_exists($getYears . $getTeams . '8' . '.txt') && $getYears >= "1996" && $check){
+        
             $filename = $getYears . $getTeams . '8' . '.txt'; 
             $fp = fopen($filename,"w");  
             fwrite($fp,$current9); 
             fclose($fp);  
-        }
-        if(!file_exists($getYears . $getTeams . '9' . '.txt') && $getYears >= "1996" && $check){
+        
             $filename = $getYears . $getTeams . '9' . '.txt'; 
             $fp = fopen($filename,"w");  
             fwrite($fp,$current10); 
             fclose($fp);  
-        }
+            $filename = $getYears . $getTeams . '10' . '.txt'; 
+            $fp = fopen($filename,"w");  
+            fwrite($fp,$current11); 
+            fclose($fp); 
+            $filename = $getYears . $getTeams . '11' . '.txt'; 
+            $fp = fopen($filename,"w");  
+            fwrite($fp,$current12); 
+            fclose($fp); 
+        
     }
     else{
         $r1 = file_get_contents($getYears . $getTeams . '.txt');
@@ -749,6 +759,8 @@
         $r8 = file_get_contents( $getYears . $getTeams . '7' . '.txt');
         $r9 = file_get_contents( $getYears . $getTeams . '8' . '.txt');
         $r10 = file_get_contents( $getYears . $getTeams . '9' . '.txt');
+        $r11 = file_get_contents( $getYears . $getTeams . '10' . '.txt');
+        $r12 = file_get_contents( $getYears . $getTeams . '11' . '.txt');
 
 
         $allRaces = preg_split("/\,/", $r1);
@@ -762,6 +774,8 @@
         $allRaces95_ = preg_split("/\,/", $r8);
         $firstVals = preg_split("/\,/", $r9);
         $xAxis = preg_split("/\,/", $r10);
+        $allTimes = preg_split("/\,/", $r11);
+        $allTimes2 = preg_split("/\,/", $r12);
 
 
 
