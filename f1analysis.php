@@ -399,7 +399,7 @@
     $allTimes2 = array();
     $firstVals = array();
 
-    if(!file_exists($getYears . $getTeams . '.txt')){
+    if(!file_exists($getYears . $getTeams . '.txt2')){
         for($t = 1; $t <= $ender; $t++){
             sleep(0.5);
             $rjson = file_get_contents('https://ergast.com/api/f1/' . $getYears . '/' . $t . '/' . 'drivers/' . $dId1 . '/laps.json?limit=100');
@@ -437,7 +437,7 @@
 
             }
 
-            if( abs($laps-$laps2) <= 1 and $t >= $starter){
+            if( abs($laps-$laps2) <= 1.0 and $t >= $starter){
               
                 
 
@@ -571,8 +571,8 @@
                 //echo(($meantime1) . "\n");
                 //echo("\n");
                 //echo(calculate_median($diff) . "\n");
-                array_push($allTimes, $meantime952);
-                array_push($allTimes2, $meantime951);
+                array_push($allTimes, $meantime951);
+                array_push($allTimes2, $meantime952);
 
                 array_push($allRaces50, number_format(computeDiff($meantime501, $meantime502), 3));
                 array_push($allRaces75, number_format(computeDiff($meantime751, $meantime752), 3));
@@ -591,6 +591,9 @@
             }
             else{
                array_push($allRaces, "NAN");
+               array_push($allTimes, "NAN");
+               array_push($allTimes2, "NAN");
+
                array_push($allRaces50, "NAN");
                array_push($allRaces75, "NAN");
                array_push($allRaces95, "NAN");
@@ -1287,7 +1290,7 @@
 
             <tr>
 
-                <th> Race Number (AVG Laptime Diff each Race) </th>
+                <th> Race Number (AVG Laptime from best 90% laps) </th>
 
                 <th> <?php echo $drivername1 ?> </th>
                 <th> <?php echo $drivername2 ?> </th>
@@ -1300,19 +1303,19 @@
                     $medCalcW = array();
                         $ti = 0;
                     while($i < $countRaces){
+
                         echo "<tr>";
                         echo "<td>" . (int)($i+1) . "</td>";
                         $sr1 = $allRaces95[$i];
                         $sr2 = $allRaces95[$i];
-                            if($getRacePositions1[$i] >= "1" && $getRacePositions1[$i] <= "25"
-                            and $getRacePositions2[$i] >= "1" && $getRacePositions2[$i] <= "25"){
+                            if(1){
                                 if($sr1 < 0 && $sr2 < 0){
-                                    echo '<td class="underl">' . convertToMinutes($allTimes2[$ti]) . "</td>";
-                                    echo '<td >' . convertToMinutes($allTimes[$ti]) . "</td>";
+                                    echo '<td class="underl">' . convertToMinutes($allTimes[$ti]) . "</td>";
+                                    echo '<td >' . convertToMinutes($allTimes2[$ti]) . "</td>";
                                 }
                                 else if($sr1 > 0 && $sr2 > 0){
-                                    echo '<td class>' . convertToMinutes($allTimes2[$ti])  . "</td>";
-                                    echo '<td class="underl">' . convertToMinutes($allTimes[$ti])  . "</td>";
+                                    echo '<td class>' . convertToMinutes($allTimes[$ti])  . "</td>";
+                                    echo '<td class="underl">' . convertToMinutes($allTimes2[$ti])  . "</td>";
 
                                 }
                                 else{
