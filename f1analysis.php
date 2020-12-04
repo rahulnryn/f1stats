@@ -409,8 +409,8 @@
             $obj2 = json_decode($rjson2);
             $laps = $obj->MRData->total;
             $laps2 = $obj2->MRData->total;
-            $laps--;
-            $laps2--;
+            $laps;
+            $laps2;
             if($laps <= 1 || $laps2 <= 1){
                 $laps = 100;
             }
@@ -437,7 +437,7 @@
 
             }
 
-            if( min(count($first), count($second)) >= 20 and abs($laps-$laps2) <= 2 and $t >= $starter){
+            if( abs($laps-$laps2) <= 1 and $t >= $starter){
               
                 
 
