@@ -371,7 +371,7 @@
     if($check == false || $getYears < '1996')
         $ender = 0;
     else{
-        $ender = 16;
+        $ender = 15;
     }
     if( ($dId1 == 'sainz' || $dId2 == 'sainz') && $getYears == '2017' && $check){
         $ender = 15;
