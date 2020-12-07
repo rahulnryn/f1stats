@@ -371,7 +371,7 @@
     if($check == false || $getYears < '1996')
         $ender = 0;
     else{
-        $ender = $countRaces;
+        $ender = 16;
     }
     if( ($dId1 == 'sainz' || $dId2 == 'sainz') && $getYears == '2017' && $check){
         $ender = 15;
@@ -399,7 +399,7 @@
     $allTimes2 = array();
     $firstVals = array();
 
-    if(!file_exists($getYears . $getTeams . '.txt')){
+    if(!file_exists($getYears . $getTeams . '.txt') and $check == true){
         for($t = 1; $t <= $ender; $t++){
             sleep(0.5);
             $rjson = file_get_contents('https://ergast.com/api/f1/' . $getYears . '/' . $t . '/' . 'drivers/' . $dId1 . '/laps.json?limit=100');
