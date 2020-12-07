@@ -14,11 +14,21 @@
     }
     
     function converToSeconds($timestr){
-        $minutes = ((double)$timestr[0]) * 60;
+        
+        $minutes = ($timestr[0]) * 60.0;
+        
+        if($minutes == 0 || $minutes == null){
+            $minutes = 0.0;
+            $str1 = $timestr[2] . $timestr[3];
+            $seconds = (double)($str1);
+            $str2 = $timestr[5] . $timestr[6] . $timestr[7];
+            $milliseconds = (double)$str2/1000.0;
+            return $seconds + $milliseconds;
+        }
         $str1 = $timestr[2] . $timestr[3];
         $seconds = (double)($str1);
         $str2 = $timestr[5] . $timestr[6] . $timestr[7];
-        $milliseconds = (double)$str2/1000.0;
+        $milliseconds = $str2/1000.0;
         return $minutes + $seconds + $milliseconds;
     }
     function converToSeconds2($timestr){
@@ -29,6 +39,7 @@
         $milliseconds = (double)$str2/1000.0;
         return $minutes + $seconds + $milliseconds;
     }
+   
     function convertToMinutes($timestr){
         $input = (double)($timestr*1000.0);
 
@@ -332,7 +343,15 @@
             $qualiscores = array_values($countQualiWins);
         }
         else{
-            
+            $qw1 = file_get_contents($getYears . "Q" . $getTeams . "1" . ".txt");
+            $qw2 = file_get_contents($getYears . "Q" . $getTeams . "2" . ".txt");
+
+            $firstQual = preg_split("/\,/", $qw1);
+            $secondQual = preg_split("/\,/", $qw2);
+            echo($firstQual[0]);
+            for($i = 0; $i < count($firstQual); $i++){
+                array_push($timeDelta2, computeDiff($firstQual[$i], $secondQual[$i]));
+            }
             
             for($x = 0; $x < $countRaces; $x++){
                 $q1pos =$obj->MRData->RaceTable->Races[$x]->Results[0]->grid;
@@ -371,7 +390,7 @@
     if($check == false || $getYears < '1996')
         $ender = 0;
     else{
-        $ender = 15;
+        $ender = $countRaces;
     }
     if( ($dId1 == 'sainz' || $dId2 == 'sainz') && $getYears == '2017' && $check){
         $ender = 15;
@@ -399,7 +418,7 @@
     $allTimes2 = array();
     $firstVals = array();
 
-    if(!file_exists($getYears . $getTeams . '.txt') and $check == true){
+    if(!file_exists($getYears . $getTeams . '.txt') and $check){
         for($t = 1; $t <= $ender; $t++){
             sleep(0.5);
             $rjson = file_get_contents('https://ergast.com/api/f1/' . $getYears . '/' . $t . '/' . 'drivers/' . $dId1 . '/laps.json?limit=100');
@@ -411,6 +430,7 @@
             $laps2 = $obj2->MRData->total;
             $laps--;
             $laps2--;
+
             if($laps <= 1 || $laps2 <= 1){
                 $laps = 100;
             }
@@ -421,15 +441,15 @@
 
             $xAxis = array();
 
-
-         
-            for($i = 2; $i < min($laps, $laps2); $i++){
-                if($obj->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time == 0){
+            if($t == 16)
+            for($i = 2; $i < $laps2; $i++){
+                if($obj->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time == null){
                     break;
                 }
-                if($obj2->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time == 0){
+                if($obj2->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time == null){
                     break;
                 }
+                
                 $dt1 = converToSeconds($obj->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time);
                 $dt2 = converToSeconds($obj2->MRData->RaceTable->Races[0]->Laps[$i]->Timings[0]->time);
                 array_push($first, $dt1);
@@ -458,6 +478,7 @@
 
                 $length951 = (int)(count($first) * 0.90);
                 $length952 = (int)(count($second) * 0.90);
+              
 
                 $length1001 = (int)(count($first) * 0.95);
                 $length1002 = (int)(count($first) * 0.95);
