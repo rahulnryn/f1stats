@@ -343,15 +343,7 @@
             $qualiscores = array_values($countQualiWins);
         }
         else{
-            $qw1 = file_get_contents($getYears . "Q" . $getTeams . "1" . ".txt");
-            $qw2 = file_get_contents($getYears . "Q" . $getTeams . "2" . ".txt");
-
-            $firstQual = preg_split("/\,/", $qw1);
-            $secondQual = preg_split("/\,/", $qw2);
-            echo($firstQual[0]);
-            for($i = 0; $i < count($firstQual); $i++){
-                array_push($timeDelta2, computeDiff($firstQual[$i], $secondQual[$i]));
-            }
+      
             
             for($x = 0; $x < $countRaces; $x++){
                 $q1pos =$obj->MRData->RaceTable->Races[$x]->Results[0]->grid;
