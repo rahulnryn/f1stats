@@ -608,7 +608,7 @@
 
             }
 
-            if( abs($laps-$laps2) <= 2 and $t >= $starter){
+            if( abs($laps-$laps2) <= 1 and $t >= $starter){
               
                 
 
