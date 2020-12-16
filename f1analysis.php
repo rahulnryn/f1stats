@@ -89,14 +89,52 @@
     }
     if(!empty($_POST['years'])){
         $getYears = $_POST['years'];
-
     }
     else{
         $getYears = "2020";
     }
     if(!empty($_POST['teams'])){
-
+            //find1
             $getTeams = $_POST['teams'];
+            $getTeams2 = $getTeams;
+            if($getTeams == "ferrari2"){
+                $getTeams = "ferrari";
+                $getTeams2 = "ferrari2";
+            }     
+            if($getTeams == "williams2"){
+                $getTeams = "williams";
+                $getTeams2 = "williams2";
+            } 
+            if($getTeams == "jordan2"){
+                $getTeams = "jordan";
+                $getTeams2 = "jordan2";
+            } 
+            if($getTeams == "red_bull2"){
+                $getTeams = "red_bull";
+                $getTeams2 = "red_bull2";
+            }  
+            if($getTeams == "mclaren2"){
+                $getTeams = "mclaren";
+                $getTeams2 = "mclaren2";
+            }  
+            if($getTeams == "bmw_sauber2"){
+                $getTeams = "bmw_sauber";
+                $getTeams2 = "bmw_sauber2";
+            } 
+            if($getTeams == "toro_rosso2"){
+                $getTeams = "toro_rosso";
+                $getTeams2 = "toro_rosso2";
+            }   
+            if($getTeams == "renault2"){
+                $getTeams = "renault";
+                $getTeams2 = "renault2";
+            } 
+            if($getTeams == "manor2"){
+                $getTeams = "manor";
+                $getTeams2 = "manor2";
+            } 
+                  
+
     }
     else{
         $getTeams = "mercedes";
@@ -132,18 +170,102 @@
    $drivername2 = $driversComp[1];
    $dId1 = $driversComp2[0];
    $dId2 = $driversComp2[1];
+   //find3
+   $moveCount = 0;
+   $countSkips = array();
+   $condWD = array();
+
+   if($getTeams2 == "ferrari2"){
+    $dId1 = "raikkonen";
+    $dId2 = "fisichella";
+    $drivername2 = "Fisichella";
+    
+
+    }
+    if($getTeams2 == "williams2" and $getYears == "2004"){
+        $dId1 = "montoya";
+        $dId2 = "pizzonia";
+        $drivername2 = "Pizzonia";
+        
+
+    }
+    if($getTeams2 == "jordan2" and $getYears == "2004"){
+        $dId1 = "heidfeld";
+        $dId2 = "glock";
+        $drivername2 = "Glock";
+        
+
+    }
+    if($getTeams2 == "red_bull2" and $getYears == "2005"){
+        $dId1 = "coulthard";
+        $dId2 = "liuzzi";
+        $drivername2 = "Liuzzi";
+        
+
+    }
+    if($getTeams2 == "mclaren2" and $getYears == "2006"){
+        $dId2 = "rosa";
+        $drivername2 = "de la Rosa";
+
+    }
+    if($getTeams2 == "bmw_sauber2" and $getYears == "2006"){
+        $dId1 = "heidfeld";
+        $dId2 = "kubica";
+        $drivername1 = "Heidfeld";
+        $drivername2 = "Kubica";
+
+    }
+    if($getTeams2 == "toro_rosso2" and $getYears == "2007"){
+        $dId2 = "vettel";
+        $drivername2 = "Vettel";
+
+    }
+    if($getTeams2 == "renault2" and $getYears == "2009"){
+        $dId2 = "grosjean";
+        $drivername2 = "Grosjean";
+
+    }
+    if($getTeams2 == "manor2" and $getYears == "2016"){
+        $dId2 = "ocon";
+        $drivername2 = "Ocon";
+
+    }
+    if($getTeams2 == "red_bull2" and $getYears == "2016"){
+        $dId2 = "kvyat";
+        $drivername2 = "Kvyat";
+
+    }
+    if($getTeams2 == "toro_rosso2" and $getYears == "2016"){
+        $dId2 = "max_verstappen";
+        $drivername2 = "Verstappen";
+
+    }
+    if($getTeams2 == "renault2" and $getYears == "2017"){
+        $dId2 = "sainz";
+        $drivername2 = "Sainz";
+
+    }
+    if($getTeams2 == "toro_rosso2" and $getYears == "2019"){
+        $dId2 = "gasly";
+        $drivername2 = "Gasly";
+
+    }
+    if($getTeams2 == "red_bull2" and $getYears == "2019"){
+        $dId2 = "albon";
+        $drivername2 = "Albon";
+
+    }
+  
    $countWins=array($drivername1=>0,$drivername2=>0);
    $countPoints=array($drivername1=>0,$drivername2=>0);
    $countTotalPoints=array($drivername1=>0,$drivername2=>0);
-
-
-
     $rounds = array();
     for($i = 0; $i < ($countRaces); $i++){
         array_push($rounds, $i+1);
     }
     $getRacePositions1 = array();
     $getRacePositions2 = array();
+    
     $racesFinished = Array($drivername1 => 0, $drivername2=>0);
     for($x = 0; $x < $countRaces; $x++){
   
@@ -249,12 +371,15 @@
     $allQual2 = array();
     if($getYears >= '2003'){
             for($x = 0; $x < $countRaces; $x++){
+                    array_push($countSkips, $moveCount);
+
                     $q1pos =$qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->position;
                     $q2pos =$qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->position;
                     $cdq1 = $qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Driver->familyName;
                     $cdq2 = $qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Driver->familyName;
                     if( (converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[0]->Q1) == NULL)
                         or (converToSeconds($qualifying->MRData->RaceTable->Races[$x]->QualifyingResults[1]->Q1) == NULL)){
+                        $moveCount++;
                         array_push($allQual1, "Not Available");
                         array_push($allQual2, "Not Available");
                         continue;
@@ -332,6 +457,7 @@
                         //}
                     }
                     else{
+                        $moveCount++;
                         array_push($allQual1, "Not Available");
                         array_push($allQual2, "Not Available");
                     }
@@ -343,7 +469,7 @@
             $qualiscores = array_values($countQualiWins);
         }
         else{
-      
+        
             
             for($x = 0; $x < $countRaces; $x++){
                 $q1pos =$obj->MRData->RaceTable->Races[$x]->Results[0]->grid;
@@ -402,15 +528,49 @@
     if( ($dId1 == 'albon' || $dId2 == 'albon') && $getYears == '2019' && $check){
         $ender = 12;
     }
-    if( ($dId1 == 'fisichella' || $dId2 == 'fisichella') && $getYears == '2009' && $check){
-        $ender = 12;
+    //find2
+    if($getTeams2 == "ferrari2"){
+        $starter = 13;
     }
+    if($getTeams2 == "williams2"){
+        $starter = 12;
+    }
+    if($getTeams2 == "jordan2"){
+        $starter = 8;
+    }
+    if($getTeams2 == "red_bull2" and $getYears=="2004"){
+        $starter = 4;
+    }
+    if($getTeams2 == "red_bull2"  and $getYears=="2007"){
+        $starter = 11;
+    }
+    if($getTeams2 == "red_bull2"  and $getYears=="2016"){
+        $starter = 1;
+        $ender=4;
+    }
+    if($getTeams2 == "toro_rosso2"  and $getYears=="2016"){
+        $starter = 1;
+        $ender=4;
+    }
+    if($getTeams2 == "renault2"  and $getYears=="2017"){
+        $starter = 17;
+        $ender = 20;
+    }
+    if($getTeams2 == "toro_rosso2"  and $getYears=="2019"){
+        $starter = 13;
+        $ender=$countRaces;
+    }
+    if($getTeams2 == "red_bull2"  and $getYears=="2019"){
+        $starter = 13;
+        $ender=$countRaces;
+    }
+  
     sleep(0.3);
     $allTimes = array();
     $allTimes2 = array();
     $firstVals = array();
 
-    if(!file_exists($getYears . $getTeams . '.txt') and $check){
+    if( (!file_exists($getYears . $getTeams2 . '.txt') and $check) || ($getTeams != $getTeams2 && $check)){
         for($t = 1; $t <= $ender; $t++){
             sleep(0.5);
             $rjson = file_get_contents('https://ergast.com/api/f1/' . $getYears . '/' . $t . '/' . 'drivers/' . $dId1 . '/laps.json?limit=100');
@@ -448,7 +608,7 @@
 
             }
 
-            if( abs($laps-$laps2) <= 1.0 and $t >= $starter){
+            if( abs($laps-$laps2) <= 2 and $t >= $starter){
               
                 
 
@@ -717,7 +877,7 @@
                 $current14 .= ',';
             }
         }
-
+        if($getTeams2 == $getTeams){
             $filename = $getYears . $getTeams . '.txt'; 
             $fp = fopen($filename,"w");  
             fwrite($fp,$current); 
@@ -784,25 +944,25 @@
             $fp = fopen($filename,"w");  
             fwrite($fp,$current14); 
             fclose($fp); 
-
+        }
           
         
     }
     else{
-        $r1 = file_get_contents($getYears . $getTeams . '.txt');
-        $r2 = file_get_contents($getYears . $getTeams . '1' . '.txt');
-        $r3 = file_get_contents($getYears . $getTeams . '2' . '.txt');
-        $r4 = file_get_contents($getYears . $getTeams . '3' . '.txt');
-        $r5 = file_get_contents($getYears . $getTeams . '4' . '.txt');
-        $r6 = file_get_contents($getYears . $getTeams . '5' . '.txt');
-        $r7 = file_get_contents( $getYears . $getTeams . '6' . '.txt');
-        $r8 = file_get_contents( $getYears . $getTeams . '7' . '.txt');
-        $r9 = file_get_contents( $getYears . $getTeams . '8' . '.txt');
-        $r10 = file_get_contents( $getYears . $getTeams . '9' . '.txt');
-        $r11 = file_get_contents( $getYears . $getTeams . '10' . '.txt');
-        $r12 = file_get_contents( $getYears . $getTeams . '11' . '.txt');
-        $r13 = file_get_contents( $getYears . $getTeams . '12' . '.txt');
-        $r14 = file_get_contents( $getYears . $getTeams . '13' . '.txt');
+        $r1 = file_get_contents($getYears . $getTeams2 . '.txt');
+        $r2 = file_get_contents($getYears . $getTeams2 . '1' . '.txt');
+        $r3 = file_get_contents($getYears . $getTeams2 . '2' . '.txt');
+        $r4 = file_get_contents($getYears . $getTeams2 . '3' . '.txt');
+        $r5 = file_get_contents($getYears . $getTeams2 . '4' . '.txt');
+        $r6 = file_get_contents($getYears . $getTeams2 . '5' . '.txt');
+        $r7 = file_get_contents( $getYears . $getTeams2 . '6' . '.txt');
+        $r8 = file_get_contents( $getYears . $getTeams2. '7' . '.txt');
+        $r9 = file_get_contents( $getYears . $getTeams2 . '8' . '.txt');
+        $r10 = file_get_contents( $getYears . $getTeams2 . '9' . '.txt');
+        $r11 = file_get_contents( $getYears . $getTeams2 . '10' . '.txt');
+        $r12 = file_get_contents( $getYears . $getTeams2 . '11' . '.txt');
+        $r13 = file_get_contents( $getYears . $getTeams2 . '12' . '.txt');
+        $r14 = file_get_contents( $getYears . $getTeams2 . '13' . '.txt');
 
 
         $allRaces = preg_split("/\,/", $r1);
@@ -1027,7 +1187,7 @@
 
             border-collapse: collapse;
             border-color: black;
-            border-spacing: 5rem;
+            border-spacing: 100rem;
             color: black;
         }
         .qualifyingcomp td{
@@ -1209,13 +1369,211 @@
                     <td> Median Qualifying % gap (fastest lap in final session) </td>
                     <?php 
                         if(number_format(calculate_median($timeDelta2), 3) > 0){
+
+                            
                             echo '<td>' . number_format(calculate_median($timeDelta2), 3) . "%" . "</td>";
                             echo '<td class="underl"> ' . -1 * number_format(calculate_median($timeDelta2), 3) . "%". "</td>";
+
                         }
                         else{
+                          
+
                             echo '<td class="underl"> ' . number_format(calculate_median($timeDelta2), 3) . "%". "</td>";
                             echo '<td>' . -1 * number_format(calculate_median($timeDelta2), 3) . "%" . "</td>";
 
+                        }
+                        
+                    ?>
+                    
+                    <?php 
+                        for($i = 0; $i < $countRaces; $i++){
+                            array_push($condWD, "Dry");
+                        }
+                        if($getYears >= "2003"){
+                            echo "<tr>";
+                            echo "<td> Median Qualifying % gap (only dry sessions) </td> ";
+
+                            if($getYears == "2018"){
+                                if($countSkips[12] - $countSkips[11] != 1)
+                                    unset($timeDelta2[11]);
+                                $condWD[11] = "Wet";
+                            }
+                            if($getYears == "2014"){
+                                if($countSkips[1] - $countSkips[0] != 1)
+                                unset($timeDelta2[0- $countSkips[0]]);
+                                if($countSkips[2] - $countSkips[1] != 1)
+                                unset($timeDelta2[1- $countSkips[1]]);
+                                if($countSkips[4] - $countSkips[3] != 1)
+                                unset($timeDelta2[3- $countSkips[3]]);
+                                if($countSkips[9] - $countSkips[8] != 1)
+                                unset($timeDelta2[8- $countSkips[8]]);
+                                if($countSkips[12] - $countSkips[11] != 1)
+                                unset($timeDelta2[11- $countSkips[11]]);
+
+                                $condWD[0] = "Wet";
+                                $condWD[1] = "Wet";
+                                $condWD[3] = "Wet";
+                                $condWD[8] = "Wet";
+                                $condWD[11] = "Wet";
+
+
+                            }//0, 1, 3, 8, 11
+                            if($getYears == "2020"){
+                                if($countSkips[2] - $countSkips[1] != 1)
+                                unset($timeDelta2[1- $countSkips[1]]);
+                                if($countSkips[14] - $countSkips[13] != 1)
+                                unset($timeDelta2[13- $countSkips[13]]);
+
+                                $condWD[1] = "Wet";
+                                $condWD[13] = "Wet";
+
+                            }
+                            if($getYears == "2007"){
+                                if($countSkips[15] - $countSkips[14] != 1)
+                                unset($timeDelta2[14- $countSkips[14]]);
+
+                                $condWD[14] = "Wet";
+                            }
+                            if($getYears == "2008"){
+                                if($countSkips[14] - $countSkips[13] != 1)
+                                unset($timeDelta2[13- $countSkips[13]]);
+
+                                $condWD[13] = "Wet";
+
+                            }
+                            if($getYears == "2009"){
+                                if($countSkips[16] - $countSkips[15] != 1)
+                                unset($timeDelta2[15- $countSkips[15]]);
+
+                                $condWD[15] = "Wet";
+
+                            }
+                            if($getYears == "2010"){
+                                if($countSkips[3] - $countSkips[2] != 1)
+                                unset($timeDelta2[2- $countSkips[2]]);
+                                if($countSkips[13] - $countSkips[12] != 1)
+                                unset($timeDelta2[12- $countSkips[12]]);
+                                if($countSkips[18] - $countSkips[17] != 1)
+                                unset($timeDelta2[17- $countSkips[17]]);
+                                
+                                $condWD[2] = "Wet";
+                                $condWD[12] = "Wet";
+                                $condWD[17] = "Wet";
+
+                                
+                            }
+                            if($getYears == "2011"){
+                                if($countSkips[12] - $countSkips[11] != 1)
+                                unset($timeDelta2[11- $countSkips[11]]);
+
+                                $condWD[11] = "Wet";
+
+                            }
+                            if($getYears == "2012"){
+                                if($countSkips[9] - $countSkips[8] != 1)
+                                unset($timeDelta2[8- $countSkips[8]]);
+                                if($countSkips[10] - $countSkips[9] != 1)
+                                unset($timeDelta2[9- $countSkips[9]]);
+                                $condWD[8] = "Wet";
+                                $condWD[9] = "Wet";
+
+                            }
+                            if($getYears == "2013"){
+                                if($countSkips[1] - $countSkips[0] != 1)
+                                unset($timeDelta2[0- $countSkips[0]]);
+                                if($countSkips[2] - $countSkips[1] != 1)
+                                unset($timeDelta2[1- $countSkips[1]]);
+                                if($countSkips[6] - $countSkips[5] != 1)
+                                unset($timeDelta2[5- $countSkips[5]]);
+                                if($countSkips[7] - $countSkips[6] != 1)
+                                unset($timeDelta2[6- $countSkips[6]]);
+                                if($countSkips[11] - $countSkips[10] != 1)
+                                unset($timeDelta2[10- $countSkips[10]]);
+                                if($countSkips[19] - $countSkips[18] != 1)
+                                unset($timeDelta2[18- $countSkips[18]]);
+
+                                $condWD[18] = "Wet";
+                                $condWD[10] = "Wet";
+                                $condWD[6] = "Wet";
+                                $condWD[5] = "Wet";
+                                $condWD[1] = "Wet";
+                                $condWD[0] = "Wet";
+
+
+                            }
+                            if($getYears == "2015"){
+                                if($countSkips[16] - $countSkips[15] != 1)
+                                    unset($timeDelta2[15- $countSkips[15]]);
+                       
+                                if($countSkips[2] - $countSkips[1] != 1)
+                                    unset($timeDelta2[1- $countSkips[1]]);
+
+                                $condWD[1] = "Wet";
+                                $condWD[15] = "Wet";
+
+                            }
+                            if($getYears == "2016"){
+                                if($countSkips[9] - $countSkips[8] != 1)
+                                    unset($timeDelta2[8- $countSkips[8]]);
+                                if($countSkips[11] - $countSkips[10] != 1)
+                                    unset($timeDelta2[10- $countSkips[10]]);
+                                
+                                $condWD[8] = "Wet";
+                                $condWD[10] = "Wet";
+
+                            }
+                            if($getYears == "2017"){
+                                if($countSkips[10] - $countSkips[9] != 1)
+                                unset($timeDelta2[9- $countSkips[9]]);
+                                if($countSkips[13] - $countSkips[12] != 1)
+                                unset($timeDelta2[12- $countSkips[12]]);
+                                
+                                $condWD[9] = "Wet";
+                                $condWD[12] = "Wet";
+
+                            }
+                            if($getYears == "2005"){
+                                if($countSkips[1] - $countSkips[0] != 1)
+                                    unset($timeDelta2[0- $countSkips[0]]);
+                                if($countSkips[18] - $countSkips[17] != 1)
+                                    unset($timeDelta2[17- $countSkips[17]]);
+                                $condWD[0] = "Wet";
+
+                                $condWD[17] = "Wet";
+
+                            }
+                            if($getYears == "2006"){
+                                if($countSkips[16] - $countSkips[15] != 1)
+                                    unset($timeDelta2[15- $countSkips[15]]);
+                       
+                                $condWD[15] = "Wet";
+
+                            }
+                            if($getYears == "2004"){
+                                if($countSkips[14] - $countSkips[13] != 1)
+                                    unset($timeDelta2[13- $countSkips[13]]);
+                                if($countSkips[17] - $countSkips[16] != 1)
+                                    unset($timeDelta2[16 - $countSkips[16]]);
+                                
+                                $condWD[16] = "Wet";
+                                $condWD[13] = "Wet";
+
+                            }
+                            if(number_format(calculate_median($timeDelta2), 3) > 0){
+
+                                
+                                echo '<td>' . number_format(calculate_median($timeDelta2), 3) . "%" . "</td>";
+                                echo '<td class="underl"> ' . -1 * number_format(calculate_median($timeDelta2), 3) . "%". "</td>";
+
+                            }
+                            else{
+                            
+
+                                echo '<td class="underl"> ' . number_format(calculate_median($timeDelta2), 3) . "%". "</td>";
+                                echo '<td>' . -1 * number_format(calculate_median($timeDelta2), 3) . "%" . "</td>";
+
+                            }
+                            echo "</tr>";
                         }
                     ?>
 
@@ -1387,11 +1745,13 @@
                 <th> <?php echo $drivername1 ?> </th>
                 <th> <?php echo $drivername2 ?> </th>
                 <th> <?php echo "% Diff" ?> </th>
+                <th> <?php echo "Conditions" ?> </th>
 
                 </tr>
             
                 <?php 
                     $i=0;
+                    
                     while($i < $countRaces){
                         echo "<tr>";
                         echo "<td>" . (int)($i+1) . "</td>";
@@ -1400,19 +1760,24 @@
                                     echo '<td class="underl">' . convertToMinutes($allQual1[$i]) . "</td>";
                                     echo '<td>' . convertToMinutes($allQual2[$i]) . "</td>";
                                     echo '<td>' . number_format(computeDiff($allQual1[$i], $allQual2[$i]), 3) . '</td>';
+                                    echo '<td>' . ($condWD[$i]) . '</td>';
 
                                 }
                                 else{
                                     echo '<td>' . convertToMinutes($allQual1[$i]) . "</td>";
                                     echo '<td class="underl">' . convertToMinutes($allQual2[$i]) . "</td>";
                                     echo '<td>' . number_format(computeDiff($allQual1[$i], $allQual2[$i]), 3)  . '</td>';
+                                    echo '<td>' . ($condWD[$i]) . '</td>';
+
                                 }
                             }
                             else{
                                 echo '<td>' .  ($allQual1[$i]) . "</td>";
                                 echo '<td>' .  ($allQual2[$i]) .  "</td>";
-
+                                echo '<td>' .  "NAN" .  "</td>";
+                                echo '<td>' . ($condWD[$i]) . '</td>';
                             }
+
                         echo "</tr>";
                         $i++;
                     }
