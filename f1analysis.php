@@ -1397,6 +1397,9 @@
                                 if($countSkips[12] - $countSkips[11] != 1)
                                     unset($timeDelta2[11]);
                                 $condWD[11] = "Wet";
+                                if($countSkips[13] - $countSkips[12] != 1)
+                                unset($timeDelta2[12- $countSkips[12]]);
+                                $condWD[12] = "Wet";
                             }
                             if($getYears == "2014"){
                                 if($countSkips[1] - $countSkips[0] != 1)
