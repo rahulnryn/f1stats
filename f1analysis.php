@@ -608,7 +608,7 @@
 
             }
 
-            if( abs($laps-$laps2) <= 1 and $t >= $starter){
+            if( abs($laps-$laps2) <= 5 and $t >= $starter and count($first)>=15){
               
                 
 
