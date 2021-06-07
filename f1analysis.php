@@ -1694,7 +1694,6 @@
 
                 <th> <?php echo $drivername1 ?> </th>
                 <th> <?php echo $drivername2 ?> </th>
-                <th> <?php echo "% Diff" ?> </th>
 
                 </tr>
             
