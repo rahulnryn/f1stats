@@ -1694,7 +1694,8 @@
 
                 <th> <?php echo $drivername1 ?> </th>
                 <th> <?php echo $drivername2 ?> </th>
-        
+                <th> <?php echo "% Diff" ?> </th>
+
                 </tr>
             
                 <?php 
@@ -1708,7 +1709,7 @@
                         echo "<td>" . (int)($i+1) . "</td>";
                         $sr1 = $allRaces95[$i];
                         $sr2 = $allRaces95[$i];
-                            if(1){
+                            if($allTimes1[$i] != "Not Available" && $allTimes2[$i] != null){
                                 if($sr1 < 0 && $sr2 < 0){
                                     echo '<td class="underl">' . convertToMinutes($allTimes[$ti]) . "</td>";
                                     echo '<td >' . convertToMinutes($allTimes2[$ti]) . "</td>";
@@ -1721,8 +1722,15 @@
                                 else{
                                     echo '<td class>' . convertToMinutes($allTimes[$ti])  . "</td>";
                                     echo '<td class>' . convertToMinutes($allTimes2[$ti])  . "</td>";
+                                    echo '<td>' . number_format(computeDiff($allTimes1[$i], $allTimes2[$i]), 3) . '</td>';
+
                                 }
                                 $ti++;
+                            }
+                            else{
+                                echo '<td>' .  ($allTimes1[$i]) . "</td>";
+                                echo '<td>' .  ($allTimes2[$i]) .  "</td>";
+                                echo '<td>' .  "NAN" .  "</td>";                            
                             }
                             $i++;
 
