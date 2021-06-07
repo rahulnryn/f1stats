@@ -1291,7 +1291,7 @@
         <?php
             echo '<p class ="xaxisfont"> Y-Axis: Median % Gap of fastest lap in final session both drivers competed (' . $drivername1 . " to " . $drivername2  . ")</p> ";
         ?>
-        <p class ="xaxisfont"> X-Axis: Session Number - All sessions where both drivers set a lap are included, no data is excluded. </p>
+        <p class ="xaxisfont"> X-Axis: Session Number - All sessions where both drivers set a lap are included. </p>
     </div>
 
     <div class ="box123">
