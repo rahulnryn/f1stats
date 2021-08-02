@@ -282,7 +282,7 @@
         $countTotalPoints[$cdn1] += $driver1points;
         $countTotalPoints[$cdn2] += $driver2points;
         if(($driver1pos == "R" || $driver1pos == "W" || $driver1pos == "D") ){
-            if(!contains($driver1status, "Collision") && !contains($driver1status, "Accident") && !contains($driver1status, "Disqualified")
+            if(!contains($driver1status, "Collision") && !contains($driver1status, "Accident")
             && !contains($driver1status, "Spun")){
                 $racesFinished[$cdn1]--;
                 $driver1pos = "RET (Non-driver/Mechanical)";
@@ -292,7 +292,7 @@
             }
         }
         if(($driver2pos == "R" || $driver2pos == "W" || $driver2pos == "D")){
-            if(!contains($driver2status, "Collision") && !contains($driver2status, "Accident") && !contains($driver2status, "Disqualified")
+            if(!contains($driver2status, "Collision") && !contains($driver2status, "Accident") 
             && !contains($driver2status, "Spun")){
                 $racesFinished[$cdn2]--;
                 $driver2pos = "RET (Non-driver/mechanical)";
@@ -333,7 +333,7 @@
         }
       
       if(contains($driver1pos, "RET")){
-        if((contains($driver1status, "Collision") || contains($driver1status, "Accident") || contains($driver1status, "Disqualified")
+        if((contains($driver1status, "Collision") || contains($driver1status, "Accident") 
             || contains($driver1status, "Spun") )
             and ($driver2pos >= "1" && $driver2pos <= "25")){
                 $countWins[$cdn2]++;
@@ -343,7 +343,7 @@
       }
         if(contains($driver2pos, "RET")){
             if((contains($driver2status, "Collision") || contains($driver2status, "Accident")
-            || contains($driver2status, "Disqualified") || contains($driver2status, "Spun"))
+            || contains($driver2status, "Spun"))
             and ($driver1pos >= "1" && $driver1pos <= "25")){
                 $countWins[$cdn1]++;
             }
