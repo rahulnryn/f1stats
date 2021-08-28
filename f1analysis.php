@@ -1452,9 +1452,9 @@
 
                             }
                             if($getYears == "2021"){
-                                if($countSkips[14] - $countSkips[13] != 1)
-                                   unset($timeDelta2[13- $countSkips[13]]);
-                                $condWD[13] = "Wet";
+                                if($countSkips[13] - $countSkips[12] != 1)
+                                   unset($timeDelta2[12- $countSkips[12]]);
+                                $condWD[12] = "Wet";
                             }
 
                             if($getYears == "2010"){
