@@ -13,9 +13,7 @@
         return $mean;
     }
     
-    function converToSe
-        
-        s($timestr){
+    function converToSeconds($timestr){
         
         $minutes = ($timestr[0]) * 60.0;
         
@@ -175,14 +173,7 @@
    //find3
    $moveCount = 0;
    $countSkips = array();
-   $
-       
-       
-       
-       
-       
-       
-       WD = array();
+   $condWD = array();
 
    if($getTeams2 == "ferrari2"){
     $dId1 = "raikkonen";
@@ -1440,13 +1431,6 @@
                                 $condWD[13] = "Wet";
 
                             }
-                            /*if($getYears == "2021"){
-                                if($countSkips[14] - $countSkips[13] != 1)
-                                unset($timeDelta2[13- $countSkips[13]]);
-
-                                $condWD[13] = "Wet";
-
-                            }*/
                             if($getYears == "2007"){
                                 if($countSkips[15] - $countSkips[14] != 1)
                                 unset($timeDelta2[14- $countSkips[14]]);
