@@ -1453,7 +1453,7 @@
                             }
                             if($getYears == "2021"){
                                 if($countSkips[14] - $countSkips[13] != 1)
-                                   unset($timeDelta2[14- $countSkips[13]]);
+                                   unset($timeDelta2[13- $countSkips[13]]);
                                 $condWD[13] = "Wet";
                             }
 
