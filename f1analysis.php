@@ -1459,13 +1459,6 @@
                                 $condWD[11] = "Wet";
                                 $condWD[14] = "Wet";
                             }
-                            
-                            if($getYears == "2022"){
-                                if($countSkips[3] - $countSkips[2] != 1)
-                                   unset($timeDelta2[2- $countSkips[2]]);
-                               
-                                $condWD[3] = "Wet";
-                            }
 
                             if($getYears == "2010"){
                                 if($countSkips[3] - $countSkips[2] != 1)
