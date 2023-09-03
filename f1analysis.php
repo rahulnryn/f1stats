@@ -1,5 +1,5 @@
 <?php
-    error_reporting(1);
+    error_reporting(0);
     
     
 
@@ -980,12 +980,8 @@
         $allTimes2 = preg_split("/\,/", $r12);
         $allRaces100_ = preg_split("/\,/", $r13);
         $allRaces100 = preg_split("/\,/", $r14);
-
-
-
+        echo("Min Range: ", $minRange);
         $minRange = number_format( calculate_median($allRaces95_), 3);
-
-
         $maxRange = number_format( calculate_median($allRaces95_), 3);
 
     }
